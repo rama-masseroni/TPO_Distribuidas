@@ -72,10 +72,10 @@ public class HomeController {
 		
 		
 		
-		model.addAttribute("serverTime", formattedDate );		
-		URL test = new File("F:\\Users\\Juampi\\Pictures\\4278.png").toURI().toURL();
-		System.out.println(test);
-		return "home";
+//		model.addAttribute("serverTime", formattedDate );		
+//		URL test = new File("F:\\Users\\Juampi\\Pictures\\4278.png").toURI().toURL();
+//		System.out.println(test);
+//		return "home";
 		
 		
 	}
