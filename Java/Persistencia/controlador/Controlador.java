@@ -6,29 +6,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import daos.DuenioDAO;
-import daos.InquilinoDAO;
-import daos.LoginDAO;
-import daos.EdificioDAO;
-import daos.ImagenDAO;
-import daos.PersonaDAO;
-import daos.ReclamoDAO;
-import daos.UnidadDAO;
-//import daos.UnidadDAO;
-import exceptions.EdificioException;
-import exceptions.PersonaException;
-import exceptions.ReclamoException;
-import exceptions.UnidadException;
-import modelo.Edificio;
-import modelo.Imagen;
-import modelo.Login;
-import modelo.Persona;
-import modelo.Reclamo;
-import modelo.Unidad;
-import views.EdificioView;
-import views.PersonaView;
-import views.ReclamoView;
-import views.UnidadView;
+import daos.UsuarioDAO;
+import modelo.Usuario;
 
 public class Controlador {
 
@@ -42,11 +21,12 @@ private static Controlador instancia;
 		return instancia;
 	}
 	
-	
-	
-	public boolean verficarLogin(String usuario, String password) {
-		boolean respuesta = new LoginDAO().verificarLogin(usuario, password);
-		return respuesta;
+	public boolean verficarLogin(String username, String password) {
+		Usuario usr = new UsuarioDAO().getUsuarioByUsername(username);
+		if(usr.verificarLogin(username, password))
+			return true;
+		else
+			return false;
 	}
 	
 	

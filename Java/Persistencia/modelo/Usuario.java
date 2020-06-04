@@ -35,6 +35,27 @@ public class Usuario {
 		this.sexo = sexo;
 	}
 	
+	public boolean verificarLogin(String username, String password) {
+		if(this.username.equals(username) && this.password.equals(password))
+			return true;
+		else
+			return false;
+	}
+	
+/*
+	
+	public void agregarRol(Rol r) {}
+	
+	public boolean tieneRol(String nombreRol) {}
+	
+	public Rol obtenerRol(String nombreRol) {}
+	
+	public void eliminarRol(String nombreRol) {}
+	
+	public UsuarioView usuarioToView() {}
+	
+	*/
+	
 	public int getId() {
 		return id;
 	}
@@ -106,21 +127,7 @@ public class Usuario {
 				+ sexo + "]";
 	}
 	
-	/*
 	
-	public boolean verificarLogin(String username, String pwd, String rol) {}
-	
-	public void agregarRol(Rol r) {}
-	
-	public boolean tieneRol(String nombreRol) {}
-	
-	public Rol obtenerRol(String nombreRol) {}
-	
-	public void eliminarRol(String nombreRol) {}
-	
-	public UsuarioView usuarioToView() {}
-	
-	*/
 		
 	
 }

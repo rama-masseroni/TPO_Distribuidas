@@ -5,12 +5,14 @@ import modelo.Usuario;
 
 import java.util.List;
 
+import controlador.Controlador;
 import daos.RolDAO;
 import daos.UsuarioDAO;
 
 public class prueba {
 
 	public static void main(String[] args) {
+		
 		
 		/*
 		 // FUNCIONA EL SELECT DE USUARIOS
@@ -25,9 +27,18 @@ public class prueba {
 		ud.save(usr);
 		*/
 		
+		/*
+		 //INCONCLUSO
 		List<Rol> lr = new RolDAO().getRolesByIdUsr(1);
 		for(Rol r : lr)
 			System.out.println(r.toString());
+		*/
+		
+		/*
+		boolean respuestaLogin;
+		respuestaLogin = Controlador.getInstancia().verficarLogin("pedro@ejemplo.ar", "123abc");
+		System.out.println(respuestaLogin);
+		*/
 		
 	}
 	
