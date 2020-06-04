@@ -1,7 +1,5 @@
 package entities;
 
-import java.time.LocalDateTime;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,73 +7,94 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table (name = "turnos")
+@Table (name = "Turnos")
 public class TurnoEntity {
 	
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
-	private int nroTurno;
-	
-	private LocalDateTime fecha;
-	
-	private ProfesionalEntity asignado;
-	
-	private PacienteEntity paciente;
-	
-	private String estado;
+	@Column (name = "id")
+	private int id;
+	@Column (name = "fecha")
+	private String fecha;
+	@Column (name = "hora")
+	private String hora;
+	@Column (name = "idEsp")
+	private int idEsp;
+	@Column (name = "idUsrMed")
+	private int idUsrMed;
+	@Column (name = "idUsrPac")
+	private int idUsrPac;
+	@Column (name = "idEstado")
+	private int idEstado;
 	
 	public TurnoEntity() {
-		
 	}
-
-	public TurnoEntity(LocalDateTime fecha, ProfesionalEntity asignado, PacienteEntity paciente, String estado) {
-		super();
+	
+	public TurnoEntity(int id, String fecha, String hora, int idEsp, int idUsrMed, int idUsrPac, int idEstado) {
+		this.id = id;
 		this.fecha = fecha;
-		this.asignado = asignado;
-		this.paciente = paciente;
-		this.estado = estado;
+		this.hora = hora;
+		this.idEsp = idEsp;
+		this.idUsrMed = idUsrMed;
+		this.idUsrPac = idUsrPac;
+		this.idEstado = idEstado;
 	}
-
-	public int getNroTurno() {
-		return nroTurno;
+	
+	public int getId() {
+		return id;
 	}
-
-	public void setNroTurno(int nroTurno) {
-		this.nroTurno = nroTurno;
+	
+	public void setId(int id) {
+		this.id = id;
 	}
-
-	public LocalDateTime getFecha() {
+	
+	public String getFecha() {
 		return fecha;
 	}
-
-	public void setFecha(LocalDateTime fecha) {
+	
+	public void setFecha(String fecha) {
 		this.fecha = fecha;
 	}
-
-	public ProfesionalEntity getAsignado() {
-		return asignado;
-	}
-
-	public void setAsignado(ProfesionalEntity asignado) {
-		this.asignado = asignado;
-	}
-
-	public PacienteEntity getPaciente() {
-		return paciente;
-	}
-
-	public void setPaciente(PacienteEntity paciente) {
-		this.paciente = paciente;
-	}
-
-	public String getEstado() {
-		return estado;
-	}
-
-	public void setEstado(String estado) {
-		this.estado = estado;
-	}
-
 	
+	public String getHora() {
+		return hora;
+	}
 	
+	public void setHora(String hora) {
+		this.hora = hora;
+	}
+	
+	public int getIdEsp() {
+		return idEsp;
+	}
+	
+	public void setIdEsp(int idEsp) {
+		this.idEsp = idEsp;
+	}
+	
+	public int getIdUsrMed() {
+		return idUsrMed;
+	}
+	
+	public void setIdUsrMed(int idUsrMed) {
+		this.idUsrMed = idUsrMed;
+	}
+	
+	public int getIdUsrPac() {
+		return idUsrPac;
+	}
+	
+	public void setIdUsrPac(int idUsrPac) {
+		this.idUsrPac = idUsrPac;
+	}
+	
+	public int getIdEstado() {
+		return idEstado;
+	}
+	
+	public void setIdEstado(int idEstado) {
+		this.idEstado = idEstado;
+	}
+		
+		
 }

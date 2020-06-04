@@ -1,0 +1,14 @@
+<hibernate-configuration>
+  <session-factory>
+    <property name="hibernate.connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
+    <property name="hibernate.connection.url">jdbc:sqlserver://localhost:1433;databaseName=CRUCIS</property>
+    <property name="hibernate.connection.username">distribuidas</property>
+    <property name="hibernate.connection.password">distribuidas</property>
+    <property name="dialect">org.hibernate.dialect.SQLServerDialect</property>
+	<property name="hibernate.show_sql">false</property>
+	
+ 	<mapping class="entities.UsuarioEntity"/>
+ 	<mapping class="entities.RolEntity"/>
+	
+  </session-factory>
+</hibernate-configuration>

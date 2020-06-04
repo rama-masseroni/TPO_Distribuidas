@@ -1,36 +1,65 @@
 package modelo;
 
-import java.time.LocalDateTime;
-
 public class Turno {
-	private LocalDateTime fecha;
-	private Usuario asignado, paciente;
-	private String estado;
 	
-	public Turno(LocalDateTime fecha, Usuario asignado, Usuario paciente, String estado) {
-		super();
-		this.fecha = fecha;
-		this.asignado = asignado;
-		this.paciente = paciente;
-		this.estado = estado;
+	private int id;
+	private String fecha, hora;
+	private int idEsp, idUsrMed, idUsrPac, idEstado;
+	
+	public int getId() {
+		return id;
 	}
-
-	public LocalDateTime getFecha() {
+	
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public String getFecha() {
 		return fecha;
 	}
-
-	public Usuario getAsignado() {
-		return asignado;
-	}
-
-	public Usuario getPaciente() {
-		return paciente;
-	}
-
-	public String getEstado() {
-		return estado;
+	
+	public void setFecha(String fecha) {
+		this.fecha = fecha;
 	}
 	
+	public String getHora() {
+		return hora;
+	}
 	
+	public void setHora(String hora) {
+		this.hora = hora;
+	}
+	
+	public int getIdEsp() {
+		return idEsp;
+	}
+	
+	public void setIdEsp(int idEsp) {
+		this.idEsp = idEsp;
+	}
+	
+	public int getIdUsrMed() {
+		return idUsrMed;
+	}
+	
+	public void setIdUsrMed(int idUsrMed) {
+		this.idUsrMed = idUsrMed;
+	}
+	
+	public int getIdUsrPac() {
+		return idUsrPac;
+	}
+	
+	public void setIdUsrPac(int idUsrPac) {
+		this.idUsrPac = idUsrPac;
+	}
+	
+	public int getIdEstado() {
+		return idEstado;
+	}
+	
+	public void setIdEstado(int idEstado) {
+		this.idEstado = idEstado;
+	}
 	
 }

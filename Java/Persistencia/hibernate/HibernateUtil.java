@@ -1,46 +1,43 @@
 package hibernate;
 
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.AnnotationConfiguration;
+import org.hibernate.boot.Metadata;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
-import entities.DueñoEntity;
-import entities.EdificioEntity;
-import entities.ImagenEntity;
-import entities.InquilinoEntity;
-import entities.LoginEntity;
-import entities.PersonaEntity;
-import entities.ReclamoEntity;
-import entities.UnidadEntity;
+public class HibernateUtil {
+    private static StandardServiceRegistry registry;
+    private static SessionFactory sessionFactory;
 
+    public static SessionFactory getSessionFactory() {
+        if (sessionFactory == null) {
+            try {
+                // Create registry
+                registry = new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
 
- 
-public class HibernateUtil
-{
-    private static final SessionFactory sessionFactory;
-    static
-    {
-        try
-        {
-        	 AnnotationConfiguration config = new AnnotationConfiguration();
-        	 	config.addAnnotatedClass(EdificioEntity.class);
-        	 	config.addAnnotatedClass(UnidadEntity.class);
-        	 	config.addAnnotatedClass(PersonaEntity.class);
-        	 	config.addAnnotatedClass(DueñoEntity.class);
-        	 	config.addAnnotatedClass(InquilinoEntity.class);
-        	 	config.addAnnotatedClass(ReclamoEntity.class);
-        	 	config.addAnnotatedClass(ImagenEntity.class);
-        	 	config.addAnnotatedClass(LoginEntity.class);
-             sessionFactory = config.buildSessionFactory();
+                // Create MetadataSources
+                MetadataSources sources = new MetadataSources(registry);
+
+                // Create Metadata
+                Metadata metadata = sources.getMetadataBuilder().build();
+
+                // Create SessionFactory
+                sessionFactory = metadata.getSessionFactoryBuilder().build();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                if (registry != null) {
+                    StandardServiceRegistryBuilder.destroy(registry);
+                }
+            }
         }
-        catch (Throwable ex)
-        {
-            System.err.println("Initial SessionFactory creation failed." + ex);
-            throw new ExceptionInInitializerError(ex);
-        }
-    }
- 
-    public static SessionFactory getSessionFactory()
-    {
         return sessionFactory;
+    }
+
+    public static void shutdown() {
+        if (registry != null) {
+            StandardServiceRegistryBuilder.destroy(registry);
+        }
     }
 }

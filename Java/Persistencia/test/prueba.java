@@ -1,41 +1,34 @@
 package test;
 
+import modelo.Rol;
+import modelo.Usuario;
+
 import java.util.List;
 
-import controlador.Controlador;
-import exceptions.EdificioException;
-import exceptions.PersonaException;
-import exceptions.ReclamoException;
-import exceptions.UnidadException;
-import modelo.Login;
-import modelo.Persona;
-import views.EdificioView;
-import views.ImagenView;
-import views.LoginView;
-import views.PersonaView;
-import views.ReclamoView;
-import views.UnidadView;
+import daos.RolDAO;
+import daos.UsuarioDAO;
 
 public class prueba {
 
-	public static void main(String[] args) throws UnidadException, EdificioException, PersonaException, ReclamoException {
-		Controlador c = new Controlador();
-		List<PersonaView> p = c.getPersonas();
-		for(PersonaView pe : p) {
-			System.out.println(pe.getNombre() + " " + pe.getDocumento());
-		}
+	public static void main(String[] args) {
 		
-		p = c.dueniosPorEdificio(1);
-		for(PersonaView pe : p) {
-			System.out.println(pe.getNombre() + " " + pe.getDocumento());
-		}
+		/*
+		 // FUNCIONA EL SELECT DE USUARIOS
+		Usuario usr = new UsuarioDAO().getUsuarioByUsername("pedro@ejemplo.ar");
+		System.out.println(usr.toString());
+		 */
 		
-		c.registrarUsuario("berni", "testcontra", "DNI93277649");
-		//LoginView l = new LoginView("berni", "testcontra", "DNI93277649");
-		boolean b = c.verficarLogin("admin", "contraadmin");
-		System.out.println(b);
-		b = c.verificarDuenio("DNI93277649", 488);
-		System.out.println(b);
+		/*
+		 // FUNCIONA EL INSERT DE USUARIOS
+		Usuario usr = new Usuario(0, "pablo@ejemplo.ar", "444444", "Pablo", "Musso", "1990-09-12", 33455715, 'M');
+		UsuarioDAO ud = new UsuarioDAO();
+		ud.save(usr);
+		*/
+		
+		List<Rol> lr = new RolDAO().getRolesByIdUsr(1);
+		for(Rol r : lr)
+			System.out.println(r.toString());
+		
 	}
 	
 

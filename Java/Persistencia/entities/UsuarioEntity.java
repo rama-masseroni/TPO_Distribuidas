@@ -5,89 +5,106 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
-
 @Entity
-@Table (name = "usuarios")
+@Table (name = "Usuarios")
 public class UsuarioEntity {
-	
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	@Column (name = "id")
-	private String id; 
+	private int id; 
 	@Column (name = "username")
 	private String username;
-	@Column (name = "pwd")
-	private String pwd; 
-	@Column (name = "name")
-	private String name;
-	@Column (name = "apellido")
-	private String apellido; 
+	@Column (name = "password")
+	private String password;
 	@Column (name = "dni")
 	private int dni;
+	@Column (name = "nombre")
+	private String nombre;
+	@Column (name = "apellido")
+	private String apellido; 
+	@Column (name = "fechaDeNacimiento")
+	private String fechaDeNacimiento;
+	@Column (name = "sexo")
+	private char sexo;
 	
-	public UsuarioEntity() {
-		
+	public UsuarioEntity() {	
 	}
 
-	public UsuarioEntity(String id, String username, String pwd, String name, String apellido, int dni) {
-		super();
+	public UsuarioEntity(int id, String username, String password, String nombre, String apellido, String fechaDeNacimiento, int dni, char sexo) {
 		this.id = id;
 		this.username = username;
-		this.pwd = pwd;
-		this.name = name;
+		this.password = password;
+		this.nombre = nombre;
 		this.apellido = apellido;
+		this.fechaDeNacimiento = fechaDeNacimiento;
 		this.dni = dni;
+		this.sexo = sexo;
 	}
-
-	public String getId() {
+	
+	public int getId() {
 		return id;
 	}
-
-	public void setId(String id) {
+	
+	public void setId(int id) {
 		this.id = id;
 	}
-
+	
 	public String getUsername() {
 		return username;
 	}
-
+	
 	public void setUsername(String username) {
 		this.username = username;
 	}
-
-	public String getPwd() {
-		return pwd;
+	
+	public String getPassword() {
+		return password;
 	}
-
-	public void setPwd(String pwd) {
-		this.pwd = pwd;
+	
+	public void setPassword(String password) {
+		this.password = password;
 	}
-
-	public String getName() {
-		return name;
+	
+	public String getNombre() {
+		return nombre;
 	}
-
-	public void setName(String name) {
-		this.name = name;
+	
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
-
+	
 	public String getApellido() {
 		return apellido;
 	}
-
+	
 	public void setApellido(String apellido) {
 		this.apellido = apellido;
 	}
-
+	
+	public String getFechaDeNacimiento() {
+		return fechaDeNacimiento;
+	}
+	
+	public void setFechaDeNacimiento(String fechaDeNacimiento) {
+		this.fechaDeNacimiento = fechaDeNacimiento;
+	}
+	
 	public int getDni() {
 		return dni;
 	}
-
+	
 	public void setDni(int dni) {
 		this.dni = dni;
+	}
+	
+	public char getSexo() {
+		return sexo;
+	}
+	
+	public void setSexo(char sexo) {
+		this.sexo = sexo;
 	}
 	
 	
