@@ -1,10 +1,9 @@
 package test;
 
 import modelo.Rol;
+import modelo.Turno;
 import modelo.Usuario;
-
 import java.util.List;
-
 import controlador.Controlador;
 import daos.RolDAO;
 import daos.UsuarioDAO;
@@ -34,13 +33,42 @@ public class prueba {
 			System.out.println(r.toString());
 		*/
 		
-		/*
+		/* FUNCIONA controlar el login de un usr
 		boolean respuestaLogin;
 		respuestaLogin = Controlador.getInstancia().verficarLogin("pedro@ejemplo.ar", "123abc");
 		System.out.println(respuestaLogin);
 		*/
 		
+		/*
+		 // INSERT de turno
+		Turno turno = new Turno(0, "2020-09-22", "14:30", "Urologia", "Reservado", 1, 3);
+		turno.guardar();
+		*/
+		
+		
+		
+		
 	}
 	
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

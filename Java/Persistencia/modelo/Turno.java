@@ -1,5 +1,7 @@
 package modelo;
 
+import daos.TurnoDAO;
+
 public class Turno {
 	
 	private int id;
@@ -17,6 +19,11 @@ public class Turno {
 		this.estado = estado;
 		this.idUsrMed = idUsrMed;
 		this.idUsrPac = idUsrPac;
+	}
+	
+	public void guardar() {
+		TurnoDAO td = new TurnoDAO();
+		td.save(this);
 	}
 	
 	public int getId() {
@@ -73,6 +80,12 @@ public class Turno {
 	
 	public void setEstado(String estado) {
 		this.estado = estado;
+	}
+
+	@Override
+	public String toString() {
+		return "Turno [id=" + id + ", fecha=" + fecha + ", hora=" + hora + ", especialidad=" + especialidad
+				+ ", estado=" + estado + ", idUsrMed=" + idUsrMed + ", idUsrPac=" + idUsrPac + "]";
 	}
 	
 }

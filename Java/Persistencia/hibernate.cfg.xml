@@ -9,6 +9,7 @@
 	
  	<mapping class="entities.UsuarioEntity"/>
  	<mapping class="entities.RolEntity"/>
+ 	<mapping class="entities.TurnoEntity"/>
 	
   </session-factory>
 </hibernate-configuration>
