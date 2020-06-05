@@ -28,8 +28,8 @@ public class prueba {
 		*/
 		
 		/*
-		 //INCONCLUSO
-		List<Rol> lr = new RolDAO().getRolesByIdUsr(1);
+		 // FUNCIONA obtener los roles de un usuario 
+		List<Rol> lr = new RolDAO().getRolesByIdUsr(4);
 		for(Rol r : lr)
 			System.out.println(r.toString());
 		*/
@@ -44,5 +44,3 @@ public class prueba {
 	
 
 }
-
-

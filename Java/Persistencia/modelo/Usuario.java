@@ -9,7 +9,7 @@ public class Usuario {
 	private char sexo;
 	private List<Rol> roles;
 	
-	//Constructor con roles
+	// Constructor con roles
 	public Usuario(int id, String username, String password, String nombre, String apellido, String fechaDeNacimiento, int dni, char sexo, List<Rol> lr) {
 		this.id = id;
 		this.username = username;
@@ -22,6 +22,7 @@ public class Usuario {
 		for(Rol r : lr)
 			this.roles.add(r);
 	}
+	
 	
 	// Constructor sin roles
 	public Usuario(int id, String username, String password, String nombre, String apellido, String fechaDeNacimiento, int dni, char sexo) {
@@ -120,11 +121,19 @@ public class Usuario {
 		this.sexo = sexo;
 	}
 
+	public List<Rol> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Rol> roles) {
+		this.roles = roles;
+	}
+
 	@Override
 	public String toString() {
 		return "Usuario [username=" + username + ", password=" + password + ", nombre=" + nombre + ", apellido="
 				+ apellido + ", fechaDeNacimiento=" + fechaDeNacimiento + ", id=" + id + ", dni=" + dni + ", sexo="
-				+ sexo + "]";
+				+ sexo + ", roles=" + roles + "]";
 	}
 	
 	

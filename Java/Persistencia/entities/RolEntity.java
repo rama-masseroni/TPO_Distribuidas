@@ -3,14 +3,19 @@ package entities;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 
+import modelo.Rol;
+
 @Entity
+@IdClass(Rol.class)
 @Table (name = "Roles")
 public class RolEntity {
 	@Id
 	@Column (name = "idUsr")
 	private int idUsr;
+	@Id
 	@Column (name = "nombreRol")
 	private String nombreRol;
 	

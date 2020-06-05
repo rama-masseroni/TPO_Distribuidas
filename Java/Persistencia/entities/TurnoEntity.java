@@ -1,5 +1,6 @@
 package entities;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,7 +10,6 @@ import javax.persistence.Table;
 @Entity
 @Table (name = "Turnos")
 public class TurnoEntity {
-	
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	@Column (name = "id")
@@ -18,26 +18,26 @@ public class TurnoEntity {
 	private String fecha;
 	@Column (name = "hora")
 	private String hora;
-	@Column (name = "idEsp")
-	private int idEsp;
+	@Column (name = "especialidad")
+	private String especialidad;
+	@Column (name = "estado")
+	private String estado;
 	@Column (name = "idUsrMed")
 	private int idUsrMed;
 	@Column (name = "idUsrPac")
 	private int idUsrPac;
-	@Column (name = "idEstado")
-	private int idEstado;
 	
 	public TurnoEntity() {
 	}
 	
-	public TurnoEntity(int id, String fecha, String hora, int idEsp, int idUsrMed, int idUsrPac, int idEstado) {
+	public TurnoEntity(int id, String fecha, String hs, String esp, String estado, int idUsrMed, int idUsrPac) {
 		this.id = id;
 		this.fecha = fecha;
-		this.hora = hora;
-		this.idEsp = idEsp;
+		this.hora = hs;
+		this.especialidad = esp;
+		this.estado = estado;
 		this.idUsrMed = idUsrMed;
 		this.idUsrPac = idUsrPac;
-		this.idEstado = idEstado;
 	}
 	
 	public int getId() {
@@ -64,12 +64,12 @@ public class TurnoEntity {
 		this.hora = hora;
 	}
 	
-	public int getIdEsp() {
-		return idEsp;
+	public String getEspecialidad() {
+		return this.especialidad;
 	}
 	
-	public void setIdEsp(int idEsp) {
-		this.idEsp = idEsp;
+	public void setEspecialidad(String especialidad) {
+		this.especialidad = especialidad;
 	}
 	
 	public int getIdUsrMed() {
@@ -88,13 +88,12 @@ public class TurnoEntity {
 		this.idUsrPac = idUsrPac;
 	}
 	
-	public int getIdEstado() {
-		return idEstado;
+	public String getEstado() {
+		return this.estado;
 	}
 	
-	public void setIdEstado(int idEstado) {
-		this.idEstado = idEstado;
-	}
-		
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}	
 		
 }

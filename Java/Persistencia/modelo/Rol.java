@@ -1,9 +1,18 @@
 package modelo;
 
-public class Rol {
+import java.io.Serializable;
+
+public class Rol implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6219529356041815669L;
 	private int idUsr;
 	private String nombreRol;
+	
+	public Rol() {
+	}
 	
 	public Rol(int idUsr, String nombreRol) {
 		this.idUsr = idUsr;

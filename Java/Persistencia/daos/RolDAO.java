@@ -14,8 +14,7 @@ public class RolDAO {
 		List<Rol> lr = new ArrayList<Rol>();
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		s.beginTransaction();
-		//asi trae todo, cuando agrego clausula where da error
-		List<RolEntity> roles = s.createQuery("from RolEntity").list();
+		List<RolEntity> roles = s.createQuery("from RolEntity r where r.idUsr = ?0").setParameter(0, idUsr).list();
 		s.getTransaction().commit();
 		s.close();
 		for(RolEntity re : roles) {
