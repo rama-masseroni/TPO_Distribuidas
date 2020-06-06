@@ -13,7 +13,9 @@ public class Paciente extends Rol {
 	private boolean pagoAlDia;
 	
 	public Paciente(int idUsr) {
+		super(idUsr, "Paciente");
 		this.idUsr = idUsr;
+		this.pagoAlDia = new PacienteDAO().getEstadoPagos(idUsr);
 	}
 	
 	public int getIdUsr() {
@@ -38,7 +40,6 @@ public class Paciente extends Rol {
 	}
 	
 	public boolean alDia() {
-		//agregar dao recuperacion de este dato
 		if(this.pagoAlDia)
 			return true;
 		else
@@ -48,15 +49,6 @@ public class Paciente extends Rol {
 	public List<Turno> misTurnos() {
 		List<Turno> lt = new PacienteDAO().getTurnosByIdUsrPac(this.idUsr);
 		return lt;
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-		
+	}	
 		
 }

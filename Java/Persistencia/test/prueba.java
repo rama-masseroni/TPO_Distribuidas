@@ -6,6 +6,7 @@ import modelo.Turno;
 import modelo.Usuario;
 import java.util.List;
 import controlador.Controlador;
+import daos.PacienteDAO;
 import daos.RolDAO;
 import daos.UsuarioDAO;
 
@@ -46,10 +47,25 @@ public class prueba {
 		turno.guardar();
 		*/
 		
-		
+		/*
+		 // SELECT de turnos de usuario
 		List<Turno> lt = new Paciente(4).misTurnos();
 		for(Turno t : lt)
 			System.out.println(t.toString());
+		*/
+		
+		/*
+		// SELECT de estado de pagos
+		boolean estaAlDia = new PacienteDAO().getEstadoPagos(4);
+		System.out.println(estaAlDia);
+		*/
+		
+		/*
+		 // Cuando se crea un Paciente ya nos devuelve su estado de pagos (agregué el método DAO que verifica el estado de pagos en el constructor de Paciente)
+		Paciente p = new Paciente(5);
+		System.out.println(p.toString());
+		*/
+		
 		
 	}
 	

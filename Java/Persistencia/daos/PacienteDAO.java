@@ -21,6 +21,16 @@ public class PacienteDAO {
 		}
 		return lt;		
 	}
+	
+	public boolean getEstadoPagos(int idUsrPac) {
+		boolean alDia = false;
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		s.beginTransaction();
+		alDia = (boolean) s.createQuery("SELECT p.pagoAlDia FROM PacienteEntity p where p.idUsr = ?0").setParameter(0, idUsrPac).uniqueResult();
+		s.getTransaction().commit();
+		s.close();
+		return alDia;		
+	}
 
 	Turno turnoToNegocio(TurnoEntity t) {
 		return new Turno(t.getId(), t.getFecha(), t.getHora(), t.getEspecialidad(), t.getEstado(), t.getIdUsrMed(), t.getIdUsrPac());

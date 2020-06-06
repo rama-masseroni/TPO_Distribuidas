@@ -10,6 +10,7 @@
  	<mapping class="entities.UsuarioEntity"/>
  	<mapping class="entities.RolEntity"/>
  	<mapping class="entities.TurnoEntity"/>
+ 	<mapping class="entities.PacienteEntity"/>
 	
   </session-factory>
 </hibernate-configuration>
