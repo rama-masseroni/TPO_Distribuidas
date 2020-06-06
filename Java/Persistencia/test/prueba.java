@@ -1,5 +1,6 @@
 package test;
 
+import modelo.Paciente;
 import modelo.Rol;
 import modelo.Turno;
 import modelo.Usuario;
@@ -46,29 +47,11 @@ public class prueba {
 		*/
 		
 		
-		
+		List<Turno> lt = new Paciente(4).misTurnos();
+		for(Turno t : lt)
+			System.out.println(t.toString());
 		
 	}
 	
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
