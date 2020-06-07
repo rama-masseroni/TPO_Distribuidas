@@ -8,6 +8,7 @@ import java.util.List;
 import controlador.Controlador;
 import daos.PacienteDAO;
 import daos.RolDAO;
+import daos.TurnoDAO;
 import daos.UsuarioDAO;
 
 public class prueba {
@@ -64,6 +65,19 @@ public class prueba {
 		 // Cuando se crea un Paciente ya nos devuelve su estado de pagos (agregué el método DAO que verifica el estado de pagos en el constructor de Paciente)
 		Paciente p = new Paciente(5);
 		System.out.println(p.toString());
+		*/
+		
+		/*
+		 // Se recupera un turno
+		Turno t = new TurnoDAO().getTurnoIndividual(2, "2020-10-28", "15:00");
+		System.out.println(t.toString());
+		*/
+		
+		/*
+		// RESERVA DE TURNO - Update
+		Paciente pac = new Paciente(8);
+		String resultadoReserva = pac.reservarTurno("Traumatología", 12, "2020-06-29", "12:00");
+		System.out.println(resultadoReserva);
 		*/
 		
 		

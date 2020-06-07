@@ -3,6 +3,7 @@ package modelo;
 import java.util.List;
 
 import daos.RolDAO;
+import daos.UsuarioDAO;
 
 public class Usuario {
 
@@ -45,6 +46,13 @@ public class Usuario {
 		else
 			return false;
 	}
+	
+	public void agregarRol(Rol r) {
+		if (!this.tieneRol(r.getNombreRol())) {
+			RolDAO rd = new RolDAO();
+			rd.save(r);
+		}
+	}
 
 	public boolean tieneRol(String nombreRol) {
 		boolean respuesta = false;
@@ -55,19 +63,18 @@ public class Usuario {
 		return respuesta;
 	}
 
-	public void agregarRol(Rol r) {
-		if (!this.tieneRol(r.getNombreRol())) {
-			RolDAO rd = new RolDAO();
-			rd.save(r);
-		}
-	}
-
+	
 	public Rol obtenerRol(String nombreRol) {
 		List<Rol> lr = new RolDAO().getRolesByIdUsr(this.id);
 		for (Rol r : lr)
 			if (r.getNombreRol().equals(nombreRol))
 				return r;
 		return null;
+	}
+	
+	public void guardar() {
+		UsuarioDAO ud = new UsuarioDAO();
+		ud.save(this);
 	}
 
 	// public UsuarioView usuarioToView() {}

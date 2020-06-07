@@ -3,7 +3,6 @@ package daos;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Session;
-
 import entities.RolEntity;
 import hibernate.HibernateUtil;
 import modelo.Rol;

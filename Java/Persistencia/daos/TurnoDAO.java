@@ -22,6 +22,25 @@ public class TurnoDAO {
 		return lt;
 	}
 	
+	public Turno getTurnoIndividual(int idUsrMed, String fecha, String hora) {
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		s.beginTransaction();
+		TurnoEntity te = (TurnoEntity) s.createQuery("from TurnoEntity t where t.idUsrMed = ?0 and t.fecha = ?1 and t.hora = ?2").setParameter(0, idUsrMed).setParameter(1, fecha).setParameter(2, hora).uniqueResult();
+		s.getTransaction().commit();
+		s.close();
+		Turno turno = toNegocio(te);
+		return turno;		
+	}
+	
+	public void reservaDeTurno(Turno t) {
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		TurnoEntity te = toEntity(t);
+		s.beginTransaction();
+		s.update(te);
+		s.getTransaction().commit();
+		s.close();		
+	}
+	
 	public void save(Turno t) {
 		TurnoEntity nuevo = toEntity(t);
 		Session s = HibernateUtil.getSessionFactory().openSession();
