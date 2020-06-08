@@ -27,28 +27,6 @@ public class UsuarioDAO {
 		s.close();
 	}
 	
-	/*
-	
-	public void update (Usuario usr) {
-		UsuarioEntity actualizacion= toEntity(usr);
-		Session s = HibernateUtil.getSessionFactory().openSession();
-		s.beginTransaction();
-		s.update(actualizacion);
-		s.getTransaction().commit();
-		s.close();
-	}
-
-	public void delete(Usuario usr) {
-		UsuarioEntity eliminar = toEntity(usr);
-		Session s = HibernateUtil.getSessionFactory().openSession();
-		s.beginTransaction();
-		s.delete(eliminar);
-		s.getTransaction().commit();
-		s.close();
-	}
-	
-	*/
-	
 	UsuarioEntity toEntity(Usuario usr) {
 		return new UsuarioEntity(usr.getId(), usr.getUsername(), usr.getPassword(), usr.getNombre(), usr.getApellido(), usr.getFechaDeNacimiento(), usr.getDni(), usr.getSexo());
 	}

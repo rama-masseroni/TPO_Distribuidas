@@ -32,7 +32,7 @@ public class TurnoDAO {
 		return turno;		
 	}
 	
-	public void reservaDeTurno(Turno t) {
+	public void update(Turno t) {
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		TurnoEntity te = toEntity(t);
 		s.beginTransaction();

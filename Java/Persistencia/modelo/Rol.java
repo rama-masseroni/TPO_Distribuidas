@@ -2,6 +2,8 @@ package modelo;
 
 import java.io.Serializable;
 
+import daos.RolDAO;
+
 public class Rol implements Serializable {
 	
 	/**
@@ -38,6 +40,11 @@ public class Rol implements Serializable {
 	@Override
 	public String toString() {
 		return "Rol [idUsr=" + idUsr + ", nombreRol=" + nombreRol + "]";
+	}
+	
+	public void guardar() {
+		RolDAO rd = new RolDAO();
+		rd.save(this);
 	}
 	
 }

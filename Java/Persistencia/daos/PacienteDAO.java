@@ -3,9 +3,13 @@ package daos;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Session;
+import entities.PacienteEntity;
 import entities.TurnoEntity;
+import entities.UsuarioEntity;
 import hibernate.HibernateUtil;
+import modelo.Paciente;
 import modelo.Turno;
+import modelo.Usuario;
 
 public class PacienteDAO {
 	
@@ -30,6 +34,23 @@ public class PacienteDAO {
 		s.getTransaction().commit();
 		s.close();
 		return alDia;		
+	}
+	
+	public void save(Paciente p) {
+		PacienteEntity nuevo = toEntity(p);
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		s.beginTransaction();
+		s.save(nuevo);
+		s.getTransaction().commit();
+		s.close();
+	}
+	
+	PacienteEntity toEntity(Paciente p) {
+		return new PacienteEntity(p.getIdUsr(), p.getPagoAlDia());
+	}
+
+	Paciente toNegocio(PacienteEntity pe) {
+		return new Paciente(pe.getIdUsr());
 	}
 
 	Turno turnoToNegocio(TurnoEntity t) {
