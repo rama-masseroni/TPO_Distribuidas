@@ -1,14 +1,61 @@
-import React from 'react';
-import { TouchableOpacity, StyleSheet, Text, View, TextInput, KeyboardAvoidingView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
 import { LinearGradient } from 'expo-linear-gradient';
-import Paciente from './Paciente'
+import React, { useState } from 'react';
+import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import Paciente from './Paciente';
 
 const Stack = createStackNavigator();
 
 function Registro({ navigation }) {
+
+  const [isLoading, setLoading] = useState(true);
+  const [data, setData] = useState([]);
+  const [user, setUser] = useState('');
+  const [pass, setPass] = useState('');
+  const [exNom, setEN] = useState('');
+  const [exPass, setEP] = useState('');
+
+
+
+  function handleTouch() {
+    let enviar = {}
+    enviar.usuario = user;
+    enviar.password = pass;
+    // console.warn(enviar);
+
+    const data = { username: 'example' };
+
+    fetch('http://192.168.0.160:1234/tpo/verificarLogin', {
+      method: 'POST', // or 'PUT'
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: 'usuario=' + user + '&password=' + pass,
+
+    })
+      .then(response => response.json())
+      .then(data => {
+        setEN(data.nombre);
+        setEP(data.apellido);
+        setData(data);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+
+
+    if (data != null) {
+      console.log("Success! Results: ", data);
+      setEN(data.nombre);
+      setEP(data.apellido);
+      // navigation.navigate('Paciente', screen = 'Principal');
+    }
+    else {
+      ToastAndroid.show("Alguno(s) de los datos ingresados es/son incorrectos. Por favor, revise.", ToastAndroid.SHORT)
+    }
+  }
+
   return (
 
     <LinearGradient
@@ -21,12 +68,14 @@ function Registro({ navigation }) {
 
         <Text style={styles.titulo}>CRUCIS</Text>
         <TextInput
+          onChangeText={text => { setUser(text) }}
           placeholder={"E-Mail"}
           style={[styles.inputBox, { marginTop: 70 }]}
           textContentType={"emailAddress"}
           keyboardType={"email-address"}
         />
         <TextInput
+          onChangeText={text => { setPass(text) }}
           placeholder={"Contraseña"}
           style={styles.inputBox}
           textContentType={"password"}
@@ -34,8 +83,10 @@ function Registro({ navigation }) {
         />
       </KeyboardAvoidingView>
       <TouchableOpacity activeOpacity={.7} style={{ marginTop: 70 }} onPress={() => {
-        navigation.navigate('Paciente', { screen: 'Principal' });
+        handleTouch()
       }}>
+        <Text>{exNom}</Text>
+        <Text>{exPass}</Text>
         <View style={styles.primaryButton} >
           <Text style={{ color: '#FFFF', fontSize: 20, fontWeight: 'bold', borderColor: '#ff3434' }}>Iniciar Sesión</Text>
         </View>
@@ -49,7 +100,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    alignContent:'center',
+    alignContent: 'center',
     justifyContent: 'flex-start',
   },
   titulo: {
