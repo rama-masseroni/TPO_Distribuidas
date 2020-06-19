@@ -10,7 +10,9 @@ var moment = require('moment');
 
 const StackPaciente = createStackNavigator();
 
-function Principal({ navigation }) {
+function Principal({ route, navigation }) {
+
+
     return (
         <LinearGradient
             colors={['#FF3535', 'white']}
@@ -37,9 +39,9 @@ function Principal({ navigation }) {
                 <View>
                     <Text style={[styles.header, { marginTop: 70 }]}>Bienvenido!</Text>
                     <View style={styles.dataBox}>
-                        <Text style={{ fontSize: 30, fontWeight: 'bold', }}>Apellido,</Text>
-                        <Text style={{ fontSize: 30, fontWeight: 'bold', }}>Nombre</Text>
-                        <Text style={{ fontSize: 20, }}>DNI</Text>
+                        <Text style={{ fontSize: 30, fontWeight: 'bold', }}>{route.params.ape},</Text>
+                        <Text style={{ fontSize: 30, fontWeight: 'bold', }}>{route.params.nom}</Text>
+                        <Text style={{ fontSize: 20, }}>{route.params.dni}</Text>
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={{ fontSize: 20, }}>Pagos: </Text>
                             <Text style={{ flex: 2, fontSize: 20, color: 'green' }}>Al día!</Text>
@@ -49,7 +51,7 @@ function Principal({ navigation }) {
                 <View style={{ marginTop: 20, }}>
                     <Text style={styles.subHeader}>Turnos Programados</Text>
                     <View style={styles.turnosCont}>
-                        <FetchApp />
+                        <FetchApp id={route.params.id}/>
                     </View>
                 </View>
                 <TouchableOpacity
@@ -114,6 +116,15 @@ function IngresarTurno({ navigation }) {
         )
     });
 
+    function getMedicos(){
+        
+    }
+
+    let listaMed = dataMed.map((myValue, indice) => {
+        return(
+            <Picker.Item label= {myValue.nombre} value={myValue.id}/>
+        )
+    })
 
     return (
         <LinearGradient
@@ -246,6 +257,7 @@ function IngresarTurno({ navigation }) {
                             <Picker
                                 selectedValue={selectedMed}
                                 style={{ color: 'black' }}
+                                onPress={() => {getMedicos();}}
                                 onValueChange={(value) => { setSelectedMed(value); }}>
 
                                 <Picker.Item value='' label='Elija una especialidad...' />
@@ -267,7 +279,7 @@ function IngresarTurno({ navigation }) {
     );
 }
 
-function ElegirTurno({navigation}) {
+function ElegirTurno({ navigation }) {
     return (
         <LinearGradient
             colors={['#FF3535', 'white']}

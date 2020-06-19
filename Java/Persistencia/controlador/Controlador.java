@@ -21,12 +21,12 @@ private static Controlador instancia;
 		return instancia;
 	}
 	
-	public boolean verficarLogin(String username, String password) {
+	public Usuario verficarLogin(String username, String password) {
 		Usuario usr = new UsuarioDAO().getUsuarioByUsername(username);
 		if(usr.verificarLogin(username, password))
-			return true;
+			return usr;
 		else
-			return false;
+			return null;
 	}
 	
 	

@@ -36,63 +36,59 @@ function Registro({ navigation }) {
     })
       .then(response => response.json())
       .then(data => {
-        setEN(data.nombre);
-        setEP(data.apellido);
-        setData(data);
+        if (data != null) {
+          navigation.navigate('Paciente', {screen: 'Principal', params: {
+            ape: data.apellido,
+            nom: data.nombre,
+            dni: data.dni,
+            id: data.id,
+          }});
+        }
+        else
+          ToastAndroid.show("Alguno(s) de los datos ingresados es/son incorrectos. Por favor, revise.", ToastAndroid.SHORT);
       })
       .catch((error) => {
         console.error('Error:', error);
       });
+}
 
+return (
 
-    if (data != null) {
-      console.log("Success! Results: ", data);
-      setEN(data.nombre);
-      setEP(data.apellido);
-      // navigation.navigate('Paciente', screen = 'Principal');
-    }
-    else {
-      ToastAndroid.show("Alguno(s) de los datos ingresados es/son incorrectos. Por favor, revise.", ToastAndroid.SHORT)
-    }
-  }
+  <LinearGradient
+    colors={['#FF3535', 'white']}
+    start={[0, 0.2]}
+    end={[0, 0.4]}
+    style={styles.container}
+  >
+    <KeyboardAvoidingView behavior={'position'}>
 
-  return (
-
-    <LinearGradient
-      colors={['#FF3535', 'white']}
-      start={[0, 0.2]}
-      end={[0, 0.4]}
-      style={styles.container}
-    >
-      <KeyboardAvoidingView behavior={'position'}>
-
-        <Text style={styles.titulo}>CRUCIS</Text>
-        <TextInput
-          onChangeText={text => { setUser(text) }}
-          placeholder={"E-Mail"}
-          style={[styles.inputBox, { marginTop: 70 }]}
-          textContentType={"emailAddress"}
-          keyboardType={"email-address"}
-        />
-        <TextInput
-          onChangeText={text => { setPass(text) }}
-          placeholder={"Contraseña"}
-          style={styles.inputBox}
-          textContentType={"password"}
-          secureTextEntry={true}
-        />
-      </KeyboardAvoidingView>
-      <TouchableOpacity activeOpacity={.7} style={{ marginTop: 70 }} onPress={() => {
-        handleTouch()
-      }}>
-        <Text>{exNom}</Text>
-        <Text>{exPass}</Text>
-        <View style={styles.primaryButton} >
-          <Text style={{ color: '#FFFF', fontSize: 20, fontWeight: 'bold', borderColor: '#ff3434' }}>Iniciar Sesión</Text>
-        </View>
-      </TouchableOpacity>
-    </LinearGradient>
-  );
+      <Text style={styles.titulo}>CRUCIS</Text>
+      <TextInput
+        onChangeText={text => { setUser(text) }}
+        placeholder={"E-Mail"}
+        style={[styles.inputBox, { marginTop: 70 }]}
+        textContentType={"emailAddress"}
+        keyboardType={"email-address"}
+      />
+      <TextInput
+        onChangeText={text => { setPass(text) }}
+        placeholder={"Contraseña"}
+        style={styles.inputBox}
+        textContentType={"password"}
+        secureTextEntry={true}
+      />
+    </KeyboardAvoidingView>
+    <TouchableOpacity activeOpacity={.7} style={{ marginTop: 70 }} onPress={() => {
+      handleTouch()
+    }}>
+      <Text>{exNom}</Text>
+      <Text>{exPass}</Text>
+      <View style={styles.primaryButton} >
+        <Text style={{ color: '#FFFF', fontSize: 20, fontWeight: 'bold', borderColor: '#ff3434' }}>Iniciar Sesión</Text>
+      </View>
+    </TouchableOpacity>
+  </LinearGradient>
+);
 }
 
 

@@ -18,6 +18,18 @@ public class UsuarioDAO {
 		return usr;
 	}
 	
+	public Usuario getUsuarioByID(int id) {
+		Usuario usr = null;
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		s.beginTransaction();
+		UsuarioEntity seleccion = (UsuarioEntity) s.createQuery("from UsuarioEntity u where u.id = ?0").setInteger(0, id).uniqueResult();
+		s.getTransaction().commit();
+		s.close();
+		usr = toNegocio(seleccion);
+		return usr;
+	}
+
+	
 	public void save(Usuario usr) {
 		UsuarioEntity nuevo = toEntity(usr);
 		Session s = HibernateUtil.getSessionFactory().openSession();
