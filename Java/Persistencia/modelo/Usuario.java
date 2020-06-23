@@ -1,9 +1,11 @@
 package modelo;
 
+import java.util.ArrayList;
 import java.util.List;
-
 import daos.RolDAO;
 import daos.UsuarioDAO;
+import views.RolView;
+import views.UsuarioView;
 
 public class Usuario {
 
@@ -12,24 +14,23 @@ public class Usuario {
 	private char sexo;
 	private List<Rol> roles;
 
-	// Constructor con roles
-	public Usuario(int id, String username, String password, String nombre, String apellido, String fechaDeNacimiento,
-			int dni, char sexo, List<Rol> lr) {
-		this.id = id;
-		this.username = username;
-		this.password = password;
-		this.nombre = nombre;
-		this.apellido = apellido;
-		this.fechaDeNacimiento = fechaDeNacimiento;
-		this.dni = dni;
-		this.sexo = sexo;
-		for (Rol r : lr)
-			this.roles.add(r);
-	}
+//	// Constructor con roles
+//	public Usuario(int id, String username, String password, String nombre, String apellido, String fechaDeNacimiento,
+//			int dni, char sexo, List<Rol> lr) {
+//		this.id = id;
+//		this.username = username;
+//		this.password = password;
+//		this.nombre = nombre;
+//		this.apellido = apellido;
+//		this.fechaDeNacimiento = fechaDeNacimiento;
+//		this.dni = dni;
+//		this.sexo = sexo;
+//		for (Rol r : lr)
+//			this.roles.add(r);
+//	}
 
 	// Constructor sin roles
-	public Usuario(int id, String username, String password, String nombre, String apellido, String fechaDeNacimiento,
-			int dni, char sexo) {
+	public Usuario(int id, String username, String password, String nombre, String apellido, String fechaDeNacimiento, int dni, char sexo) {
 		this.id = id;
 		this.username = username;
 		this.password = password;
@@ -156,6 +157,13 @@ public class Usuario {
 		return "Usuario [username=" + username + ", password=" + password + ", nombre=" + nombre + ", apellido="
 				+ apellido + ", fechaDeNacimiento=" + fechaDeNacimiento + ", id=" + id + ", dni=" + dni + ", sexo="
 				+ sexo + ", roles=" + roles + "]";
+	}
+	
+	public UsuarioView toView() {
+		List<RolView> rv = new ArrayList<RolView>();
+		for(Rol r : roles)
+			rv.add(r.toView());
+		return new UsuarioView(id, username, password, nombre, apellido, fechaDeNacimiento, dni, sexo, rv);
 	}
 
 }

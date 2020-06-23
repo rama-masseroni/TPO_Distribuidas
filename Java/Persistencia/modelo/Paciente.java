@@ -3,7 +3,6 @@ package modelo;
 import java.util.Date;
 import java.util.List;
 import daos.PacienteDAO;
-import daos.RolDAO;
 import daos.TurnoDAO;
 import utilitarios.CalculosFechas;
 
@@ -20,7 +19,7 @@ public class Paciente extends Rol {
 		this.idUsr = idUsr;
 		this.pagoAlDia = new PacienteDAO().getEstadoPagos(idUsr);
 	}
-	
+
 	public Paciente(int idUsr, boolean pagoAlDia) {
 		this.idUsr = idUsr;
 		this.pagoAlDia = pagoAlDia;
@@ -46,12 +45,10 @@ public class Paciente extends Rol {
 	public String toString() {
 		return "Paciente [idUsr=" + idUsr + ", pagoAlDia=" + pagoAlDia + "]";
 	}
-	
+
 	public void guardar() {
 		PacienteDAO pd = new PacienteDAO();
 		pd.save(this);
-		Rol r = new Rol(this.idUsr, "Paciente");
-		r.guardar();
 	}
 
 	public boolean alDia() {
@@ -62,7 +59,7 @@ public class Paciente extends Rol {
 	}
 
 	public List<Turno> misTurnos() {
-		List<Turno> lt = new PacienteDAO().getTurnosByIdUsrPac(this.idUsr);
+		List<Turno> lt = new TurnoDAO().getTurnosByPaciente(this.idUsr);
 		return lt;
 	}
 
@@ -100,36 +97,9 @@ public class Paciente extends Rol {
 		}
 	}
 
-	public String confirmarAsistencia(String fecha, String hora) {
-		CalculosFechas calc = new CalculosFechas();
-		Date fechaDelTurno = calc.dateDesdeStrings(fecha, hora);
-		Date confInicial = calc.sumarHorasAFecha(fechaDelTurno, -12);
-		Date confFinal = calc.sumarHorasAFecha(fechaDelTurno, -1);
-		Date fechaHsActual = new Date();
-		if (fechaHsActual.compareTo(confInicial) > 0 && fechaHsActual.compareTo(confFinal) < 0) {
-			TurnoDAO td = new TurnoDAO();
-			List<Turno> lt = misTurnos();
-			for (Turno t : lt)
-				if (t.getFecha().equals(fecha) && t.getHora().equals(hora)) {
-					t.setEstado("Confirmado");
-					td.update(t);
-				}
-			return "Ha confirmado el turno exitosamente!";
-		} else {
-			TurnoDAO td = new TurnoDAO();
-			List<Turno> lt = misTurnos();
-			for (Turno t : lt)
-				if (t.getFecha().equals(fecha) && t.getHora().equals(hora)) {
-					t.setEstado("Confirmado fuera de término");
-					td.update(t);
-				}
-			return "Usted no ha confirmado su turno a tiempo";
-		}
-	}
-
 	public String cancelarTurno(String fecha, String hora) {
 		CalculosFechas calc = new CalculosFechas();
-		Date fechaDelTurno = calc.dateDesdeStrings(fecha, hora);
+		Date fechaDelTurno = calc.deStringADateUtil(fecha, hora);
 		Date cancelacionPermitida = calc.sumarHorasAFecha(fechaDelTurno, -12);
 		Date fechaHsActual = new Date();
 		if (fechaHsActual.compareTo(cancelacionPermitida) > 0) {
@@ -149,9 +119,68 @@ public class Paciente extends Rol {
 					t.setEstado("Disponible");
 					t.setIdUsrPac(1);
 					td.update(t);
+					return "Su turno ha sido cancelado";
 				}
-			return "Su turno ha sido cancelado";
+			return "No existe el turno";
 		}
 	}
+
+	public String confirmarAsistencia(String fecha, String hora) {
+		CalculosFechas calc = new CalculosFechas();
+		Date fechaDelTurno = calc.deStringADateUtil(fecha, hora);
+		Date confInicial = calc.sumarHorasAFecha(fechaDelTurno, -12);
+		Date confFinal = calc.sumarHorasAFecha(fechaDelTurno, -1);
+		Date fechaHsActual = new Date();
+		if (fechaHsActual.compareTo(confInicial) >= 0 && fechaHsActual.compareTo(confFinal) < 0) {
+			TurnoDAO td = new TurnoDAO();
+			List<Turno> lt = misTurnos();
+			for (Turno t : lt)
+				if (t.getFecha().equals(fecha) && t.getHora().equals(hora)) {
+					t.setEstado("Confirmado");
+					td.update(t);
+				}
+			return "Ha confirmado el turno exitosamente!";
+		} else {
+			if (fechaHsActual.compareTo(confInicial) < 0) {
+				return "Todavía no puede confirmar este turno, debe esperar hasta doce horas antes del mismo.";
+			} else {
+				TurnoDAO td = new TurnoDAO();
+				List<Turno> lt = misTurnos();
+				for (Turno t : lt)
+					if (t.getFecha().equals(fecha) && t.getHora().equals(hora)) {
+						t.setEstado("Confirmado tarde");
+						td.update(t);
+					}
+				return "Usted no ha confirmado su turno a tiempo";
+			}
+		}
+	}
+
+//	public String confirmarAsistencia(String fecha, String hora) {
+//		CalculosFechas calc = new CalculosFechas();
+//		Date fechaDelTurno = calc.deStringADateUtil(fecha, hora);
+//		Date confInicial = calc.sumarHorasAFecha(fechaDelTurno, -12);
+//		Date confFinal = calc.sumarHorasAFecha(fechaDelTurno, -1);
+//		Date fechaHsActual = new Date();
+//		if (fechaHsActual.compareTo(confInicial) > 0 && fechaHsActual.compareTo(confFinal) < 0) {
+//			TurnoDAO td = new TurnoDAO();
+//			List<Turno> lt = misTurnos();
+//			for (Turno t : lt)
+//				if (t.getFecha().equals(fecha) && t.getHora().equals(hora)) {
+//					t.setEstado("Confirmado");
+//					td.update(t);
+//				}
+//			return "Ha confirmado el turno exitosamente!";
+//		} else {
+//			TurnoDAO td = new TurnoDAO();
+//			List<Turno> lt = misTurnos();
+//			for (Turno t : lt)
+//				if (t.getFecha().equals(fecha) && t.getHora().equals(hora)) {
+//					t.setEstado("Confirmado fuera de término");
+//					td.update(t);
+//				}
+//			return "Usted no ha confirmado su turno a tiempo";
+//		}
+//	}
 
 }

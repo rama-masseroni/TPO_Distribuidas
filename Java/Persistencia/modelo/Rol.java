@@ -1,8 +1,8 @@
 package modelo;
 
 import java.io.Serializable;
-
 import daos.RolDAO;
+import views.RolView;
 
 public class Rol implements Serializable {
 	
@@ -40,6 +40,10 @@ public class Rol implements Serializable {
 	@Override
 	public String toString() {
 		return "Rol [idUsr=" + idUsr + ", nombreRol=" + nombreRol + "]";
+	}
+	
+	public RolView toView() {
+		return new RolView(this.idUsr, this.nombreRol);
 	}
 	
 	public void guardar() {

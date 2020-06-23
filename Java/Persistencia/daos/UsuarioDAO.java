@@ -44,7 +44,7 @@ public class UsuarioDAO {
 	}
 
 	Usuario toNegocio(UsuarioEntity usr) {
-		return new Usuario(usr.getId(), usr.getUsername(), usr.getPassword(), usr.getNombre(), usr.getApellido(), usr.getFechaDeNacimiento(), usr.getDni(), usr.getSexo());
+		return new Usuario(usr.getId(), usr.getUsername(), usr.getPassword(), usr.getNombre(), usr.getApellido(), usr.getFechaDeNacimiento().toString(), usr.getDni(), usr.getSexo());
 	}
 	
 

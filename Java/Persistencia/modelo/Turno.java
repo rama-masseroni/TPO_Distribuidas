@@ -1,6 +1,7 @@
 package modelo;
 
 import daos.TurnoDAO;
+import views.TurnoView;
 
 public class Turno {
 	
@@ -13,6 +14,16 @@ public class Turno {
 	
 	public Turno(int id, String fecha, String hs, String esp, String estado, int idUsrMed, int idUsrPac) {
 		this.id = id;
+		this.fecha = fecha;
+		this.hora = hs;
+		this.especialidad = esp;
+		this.estado = estado;
+		this.idUsrMed = idUsrMed;
+		this.idUsrPac = idUsrPac;
+	}
+	
+	// Constructor sin id (para turnos nuevos)
+	public Turno(String fecha, String hs, String esp, String estado, int idUsrMed, int idUsrPac) {
 		this.fecha = fecha;
 		this.hora = hs;
 		this.especialidad = esp;
@@ -86,6 +97,10 @@ public class Turno {
 	public String toString() {
 		return "Turno [id=" + id + ", fecha=" + fecha + ", hora=" + hora + ", especialidad=" + especialidad
 				+ ", estado=" + estado + ", idUsrMed=" + idUsrMed + ", idUsrPac=" + idUsrPac + "]";
+	}
+	
+	public TurnoView toView() {
+		return new TurnoView(this.id, this.fecha, this.hora, this.especialidad, this.estado, this.idUsrMed, this.idUsrPac);
 	}
 	
 }

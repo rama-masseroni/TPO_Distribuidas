@@ -1,46 +1,84 @@
 package views;
 
-import java.time.LocalDateTime;
-
-import modelo.Usuario;
-
 public class TurnoView {
 	
-	private LocalDateTime fecha;
-	private Usuario asignado, paciente;
-	private String estado;
-
-	public TurnoView() {}
-
-	public TurnoView(LocalDateTime fecha, Usuario asignado, Usuario paciente, String estado) {
-		super();
-		this.fecha = fecha;
-		this.asignado = asignado;
-		this.paciente = paciente;
-		this.estado = estado;
+	private int id;
+	private String fecha, hora, especialidad, estado;
+	private int idUsrMed, idUsrPac;
+	
+	public TurnoView() {
 	}
-
-	public LocalDateTime getFecha() {
+	
+	public TurnoView(int id, String fecha, String hs, String esp, String estado, int idUsrMed, int idUsrPac) {
+		this.id = id;
+		this.fecha = fecha;
+		this.hora = hs;
+		this.especialidad = esp;
+		this.estado = estado;
+		this.idUsrMed = idUsrMed;
+		this.idUsrPac = idUsrPac;
+	}
+	
+	public int getId() {
+		return id;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public String getFecha() {
 		return fecha;
 	}
-
-	public Usuario getAsignado() {
-		return asignado;
+	
+	public void setFecha(String fecha) {
+		this.fecha = fecha;
 	}
-
-	public Usuario getPaciente() {
-		return paciente;
+	
+	public String getHora() {
+		return hora;
 	}
-
+	
+	public void setHora(String hora) {
+		this.hora = hora;
+	}
+	
+	public String getEspecialidad() {
+		return this.especialidad;
+	}
+	
+	public void setEspecialidad(String especialidad) {
+		this.especialidad = especialidad;
+	}
+	
+	public int getIdUsrMed() {
+		return idUsrMed;
+	}
+	
+	public void setIdUsrMed(int idUsrMed) {
+		this.idUsrMed = idUsrMed;
+	}
+	
+	public int getIdUsrPac() {
+		return idUsrPac;
+	}
+	
+	public void setIdUsrPac(int idUsrPac) {
+		this.idUsrPac = idUsrPac;
+	}
+	
 	public String getEstado() {
-		return estado;
+		return this.estado;
+	}
+	
+	public void setEstado(String estado) {
+		this.estado = estado;
 	}
 
 	@Override
 	public String toString() {
-		return "TurnoView [fecha=" + fecha + ", asignado=" + asignado + ", paciente=" + paciente + ", estado=" + estado
-				+ "]";
+		return "TurnoView [id=" + id + ", fecha=" + fecha + ", hora=" + hora + ", especialidad=" + especialidad
+				+ ", estado=" + estado + ", idUsrMed=" + idUsrMed + ", idUsrPac=" + idUsrPac + "]";
 	}
-	
 	
 }

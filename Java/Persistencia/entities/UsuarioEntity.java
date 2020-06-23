@@ -1,11 +1,14 @@
 package entities;
 
+import java.sql.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import utilitarios.CalculosFechas;
 
 @Entity
 @Table (name = "Usuarios")
@@ -25,7 +28,7 @@ public class UsuarioEntity {
 	@Column (name = "apellido")
 	private String apellido; 
 	@Column (name = "fechaDeNacimiento")
-	private String fechaDeNacimiento;
+	private Date fechaDeNacimiento;
 	@Column (name = "sexo")
 	private char sexo;
 	
@@ -38,7 +41,8 @@ public class UsuarioEntity {
 		this.password = password;
 		this.nombre = nombre;
 		this.apellido = apellido;
-		this.fechaDeNacimiento = fechaDeNacimiento;
+		Date fNac = CalculosFechas.getInstancia().deStringADateSql(fechaDeNacimiento);
+		this.fechaDeNacimiento = fNac;
 		this.dni = dni;
 		this.sexo = sexo;
 	}
@@ -83,12 +87,13 @@ public class UsuarioEntity {
 		this.apellido = apellido;
 	}
 	
-	public String getFechaDeNacimiento() {
+	public Date getFechaDeNacimiento() {
 		return fechaDeNacimiento;
 	}
 	
 	public void setFechaDeNacimiento(String fechaDeNacimiento) {
-		this.fechaDeNacimiento = fechaDeNacimiento;
+		Date fNac = CalculosFechas.getInstancia().deStringADateSql(fechaDeNacimiento);
+		this.fechaDeNacimiento = fNac;
 	}
 	
 	public int getDni() {

@@ -1,5 +1,6 @@
 package entities;
 
+import java.sql.Timestamp;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,9 +16,7 @@ public class TurnoEntity {
 	@Column (name = "id")
 	private int id;
 	@Column (name = "fecha")
-	private String fecha;
-	@Column (name = "hora")
-	private String hora;
+	private Timestamp fecha;
 	@Column (name = "especialidad")
 	private String especialidad;
 	@Column (name = "estado")
@@ -30,10 +29,9 @@ public class TurnoEntity {
 	public TurnoEntity() {
 	}
 	
-	public TurnoEntity(int id, String fecha, String hs, String esp, String estado, int idUsrMed, int idUsrPac) {
+	public TurnoEntity(int id, Timestamp fecha, String esp, String estado, int idUsrMed, int idUsrPac) {
 		this.id = id;
 		this.fecha = fecha;
-		this.hora = hs;
 		this.especialidad = esp;
 		this.estado = estado;
 		this.idUsrMed = idUsrMed;
@@ -48,21 +46,14 @@ public class TurnoEntity {
 		this.id = id;
 	}
 	
-	public String getFecha() {
+	public Timestamp getFecha() {
 		return fecha;
 	}
 	
-	public void setFecha(String fecha) {
+	public void setFecha(Timestamp fecha) {
 		this.fecha = fecha;
 	}
 	
-	public String getHora() {
-		return hora;
-	}
-	
-	public void setHora(String hora) {
-		this.hora = hora;
-	}
 	
 	public String getEspecialidad() {
 		return this.especialidad;
@@ -94,6 +85,12 @@ public class TurnoEntity {
 	
 	public void setEstado(String estado) {
 		this.estado = estado;
+	}
+
+	@Override
+	public String toString() {
+		return "NuevoTurnoEntity [id=" + id + ", fecha=" + fecha + ", especialidad=" + especialidad + ", estado="
+				+ estado + ", idUsrMed=" + idUsrMed + ", idUsrPac=" + idUsrPac + "]";
 	}	
 		
 }
