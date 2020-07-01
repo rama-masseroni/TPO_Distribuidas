@@ -35,14 +35,7 @@ public class CalculosFechas {
 		Timestamp ts = Timestamp.valueOf(cadena);
 		return ts;
 	}
-
-	public Date sumarHorasAFecha(Date fecha, int horas) {
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(fecha);
-		calendar.add(Calendar.HOUR, horas);
-		return calendar.getTime();
-	}
-
+	
 	public Date deStringADateUtil(String fecha, String hora) {
 		String anio = fecha.substring(0, 4);
 		String mes = fecha.substring(5, 7);
@@ -67,4 +60,76 @@ public class CalculosFechas {
 		return resultado;
 	}
 
+	public Date sumarHorasAFecha(Date fecha, int horas) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(fecha);
+		calendar.add(Calendar.HOUR, horas);
+		return calendar.getTime();
+	}
+
+	public Date sumarDiasAFecha(Date fecha, int dias) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(fecha);
+		calendar.add(Calendar.DATE, dias);
+		return calendar.getTime();
+	}
+	
+	public Date sumarMesesAFecha(Date fecha, int meses) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(fecha);
+		calendar.add(Calendar.MONTH, meses);
+		return calendar.getTime();
+	}
+
+	public boolean puedeAgendar(String fecha) {
+		Date fechaPedida = deStringADateUtil(fecha, "00:00");
+		Date fechaActual = new Date();
+		fechaActual.setHours(0);
+		fechaActual.setMinutes(0);
+		fechaActual.setSeconds(0);
+		Date fechaMaxPermitida = sumarMesesAFecha(fechaActual, 2);
+		if (fechaPedida.compareTo(fechaMaxPermitida) > 0)
+			return false;
+		else
+			return true;
+	}
+	
+	public boolean puedeModificarAgenda(String fecha) {
+		Date fechaPedida = deStringADateUtil(fecha, "00:00");
+		Date fechaActual = new Date();
+		fechaActual.setHours(0);
+		fechaActual.setMinutes(0);
+		fechaActual.setSeconds(0);
+		Date fecInicioModif = sumarDiasAFecha(fechaActual, 7);
+		if (fechaPedida.compareTo(fecInicioModif) > 0)
+			return true;
+		else
+			return false;
+	}
+	
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

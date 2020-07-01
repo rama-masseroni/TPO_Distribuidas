@@ -14,20 +14,20 @@ public class Usuario {
 	private char sexo;
 	private List<Rol> roles;
 
-//	// Constructor con roles
-//	public Usuario(int id, String username, String password, String nombre, String apellido, String fechaDeNacimiento,
-//			int dni, char sexo, List<Rol> lr) {
-//		this.id = id;
-//		this.username = username;
-//		this.password = password;
-//		this.nombre = nombre;
-//		this.apellido = apellido;
-//		this.fechaDeNacimiento = fechaDeNacimiento;
-//		this.dni = dni;
-//		this.sexo = sexo;
-//		for (Rol r : lr)
-//			this.roles.add(r);
-//	}
+	// Constructor con roles
+	public Usuario(int id, String username, String password, String nombre, String apellido, String fechaDeNacimiento,
+			int dni, char sexo, List<Rol> lr) {
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.fechaDeNacimiento = fechaDeNacimiento;
+		this.dni = dni;
+		this.sexo = sexo;
+		this.roles = new ArrayList<>();
+		this.roles = lr;
+	}
 
 	// Constructor sin roles
 	public Usuario(int id, String username, String password, String nombre, String apellido, String fechaDeNacimiento, int dni, char sexo) {
@@ -161,9 +161,9 @@ public class Usuario {
 	
 	public UsuarioView toView() {
 		List<RolView> rv = new ArrayList<RolView>();
-		for(Rol r : roles)
-			rv.add(r.toView());
-		return new UsuarioView(id, username, password, nombre, apellido, fechaDeNacimiento, dni, sexo, rv);
+		//for(Rol r : roles)
+		//	rv.add(r.toView());
+		return new UsuarioView(username, nombre, apellido, fechaDeNacimiento, dni, sexo);
 	}
 
 }

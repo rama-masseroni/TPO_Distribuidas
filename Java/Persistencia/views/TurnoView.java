@@ -5,18 +5,31 @@ public class TurnoView {
 	private int id;
 	private String fecha, hora, especialidad, estado;
 	private int idUsrMed, idUsrPac;
+	private UsuarioView paciente, medico;
 	
 	public TurnoView() {
 	}
 	
-	public TurnoView(int id, String fecha, String hs, String esp, String estado, int idUsrMed, int idUsrPac) {
+//	public TurnoView(int id, String fecha, String hs, String esp, String estado, int idUsrMed, int idUsrPac) {
+//		this.id = id;
+//		this.fecha = fecha;
+//		this.hora = hs;
+//		this.especialidad = esp;
+//		this.estado = estado;
+//		this.idUsrMed = idUsrMed;
+//		this.idUsrPac = idUsrPac;
+//	}
+	
+	public TurnoView(int id, String fecha, String hs, String esp, String estado, int idUsrPac, UsuarioView paciente, int idUsrMed, UsuarioView medico) {
 		this.id = id;
 		this.fecha = fecha;
 		this.hora = hs;
 		this.especialidad = esp;
 		this.estado = estado;
-		this.idUsrMed = idUsrMed;
 		this.idUsrPac = idUsrPac;
+		this.paciente = paciente;
+		this.idUsrMed = idUsrMed;
+		this.medico = medico;
 	}
 	
 	public int getId() {
@@ -75,10 +88,62 @@ public class TurnoView {
 		this.estado = estado;
 	}
 
+	public UsuarioView getPaciente() {
+		return paciente;
+	}
+
+	public void setPaciente(UsuarioView paciente) {
+		this.paciente = paciente;
+	}
+
+	public UsuarioView getMedico() {
+		return medico;
+	}
+
+	public void setMedico(UsuarioView medico) {
+		this.medico = medico;
+	}
+	
+	
+	/*
+	public String getUsernamePac() {
+		return paciente.getUsername();
+	}
+	
+	public String getNombrePac() {
+		return paciente.getNombre();
+	}
+	
+	public String getApellPac() {
+		return paciente.getApellido();
+	}
+	
+	public String getUsernameMed() {
+		return medico.getUsername();
+	}
+	
+	public String getNombreMed() {
+		return medico.getNombre();
+	}
+	
+	public String getApellMed() {
+		return medico.getApellido();
+	}
+	*/
+
+	@Override
+	public String toString() {
+		return "TurnoView [id=" + id + ", fecha=" + fecha + ", hora=" + hora + ", especialidad=" + especialidad
+				+ ", estado=" + estado + ", idUsrMed=" + idUsrMed + ", idUsrPac=" + idUsrPac + ", paciente=" + paciente
+				+ ", medico=" + medico + "]";
+	}
+
+	/*
 	@Override
 	public String toString() {
 		return "TurnoView [id=" + id + ", fecha=" + fecha + ", hora=" + hora + ", especialidad=" + especialidad
 				+ ", estado=" + estado + ", idUsrMed=" + idUsrMed + ", idUsrPac=" + idUsrPac + "]";
 	}
+	*/
 	
 }

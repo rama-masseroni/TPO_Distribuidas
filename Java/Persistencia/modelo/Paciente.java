@@ -7,6 +7,7 @@ import daos.TurnoDAO;
 import utilitarios.CalculosFechas;
 
 public class Paciente extends Rol {
+	
 	/**
 	 * 
 	 */
@@ -59,7 +60,7 @@ public class Paciente extends Rol {
 	}
 
 	public List<Turno> misTurnos() {
-		List<Turno> lt = new TurnoDAO().getTurnosByPaciente(this.idUsr);
+		List<Turno> lt = new TurnoDAO().getProxTurnosPaciente(this.idUsr);
 		return lt;
 	}
 

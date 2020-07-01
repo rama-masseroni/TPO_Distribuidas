@@ -8,13 +8,11 @@ import javax.persistence.Table;
 import modelo.Medico;
 
 @Entity
-@IdClass(Medico.class)
 @Table (name = "Medicos")
 public class MedicoEntity {
 	@Id
 	@Column (name = "idUsr")
 	private int idUsr;
-	@Id
 	@Column (name = "especialidad")
 	private String especialidad;
 	

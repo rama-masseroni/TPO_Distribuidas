@@ -1,8 +1,11 @@
 package daos;
 
+import java.util.List;
+
 import org.hibernate.Session;
 import entities.UsuarioEntity;
 import hibernate.HibernateUtil;
+import modelo.Rol;
 import modelo.Usuario;
 
 public class UsuarioDAO {
@@ -18,14 +21,26 @@ public class UsuarioDAO {
 		return usr;
 	}
 	
+//	public Usuario getUsuarioByID(int id) {
+//		Usuario usr = null;
+//		Session s = HibernateUtil.getSessionFactory().openSession();
+//		s.beginTransaction();
+//		UsuarioEntity seleccion = (UsuarioEntity) s.createQuery("from UsuarioEntity u where u.id = ?0").setInteger(0, id).uniqueResult();
+//		s.getTransaction().commit();
+//		s.close();
+//		usr = toNegocio(seleccion);
+//		return usr;
+//	}
+	
 	public Usuario getUsuarioByID(int id) {
 		Usuario usr = null;
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		s.beginTransaction();
 		UsuarioEntity seleccion = (UsuarioEntity) s.createQuery("from UsuarioEntity u where u.id = ?0").setInteger(0, id).uniqueResult();
+		List<Rol> lr = new RolDAO().getRolesByIdUsr(id);
 		s.getTransaction().commit();
 		s.close();
-		usr = toNegocio(seleccion);
+		usr = toNegocio(seleccion, lr);
 		return usr;
 	}
 
@@ -45,6 +60,10 @@ public class UsuarioDAO {
 
 	Usuario toNegocio(UsuarioEntity usr) {
 		return new Usuario(usr.getId(), usr.getUsername(), usr.getPassword(), usr.getNombre(), usr.getApellido(), usr.getFechaDeNacimiento().toString(), usr.getDni(), usr.getSexo());
+	}
+	
+	Usuario toNegocio(UsuarioEntity usr, List<Rol> lr) {
+		return new Usuario(usr.getId(), usr.getUsername(), usr.getPassword(), usr.getNombre(), usr.getApellido(), usr.getFechaDeNacimiento().toString(), usr.getDni(), usr.getSexo(), lr);
 	}
 	
 

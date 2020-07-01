@@ -11,19 +11,6 @@ import utilitarios.CalculosFechas;
 
 public class TurnoDAO {
 	
-	public List<Turno> getTurnosByPaciente(int idUsrPac) {
-		List<Turno> lt = new ArrayList<Turno>(); 
-		Session s = HibernateUtil.getSessionFactory().openSession();
-		s.beginTransaction();
-		List<TurnoEntity> turnosPaciente = s.createQuery("from TurnoEntity t where t.idUsrPac = ?0").setParameter(0, idUsrPac).list();
-		s.getTransaction().commit();
-		s.close();
-		for(TurnoEntity te : turnosPaciente) {
-			lt.add(toNegocio(te));
-		}
-		return lt;
-	}
-	
 	public Turno getTurnoIndividual(int idUsrMed, String fecha, String hora) {
 		Timestamp ts = CalculosFechas.getInstancia().deStringATimestamp(fecha, hora);
 		Session s = HibernateUtil.getSessionFactory().openSession();
@@ -35,7 +22,57 @@ public class TurnoDAO {
 		return turno;		
 	}
 	
-	// en prueba
+	public List<Turno> getProxTurnosPaciente(int idUsrPac) {
+		List<Turno> lt = new ArrayList<Turno>(); 
+		Timestamp actual = new Timestamp(System.currentTimeMillis());
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		s.beginTransaction();
+		List<TurnoEntity> turnosPaciente = s.createQuery("from TurnoEntity t where t.idUsrPac = ?0 and t.fecha >= ?1").setParameter(0, idUsrPac).setParameter(1, actual).list();
+		s.getTransaction().commit();
+		s.close();
+		for(TurnoEntity te : turnosPaciente) 
+			lt.add(toNegocio(te));
+		return lt;
+	}
+	
+	public List<Turno> getProxTurnosMedico(int idUsrMed) {
+		List<Turno> lt = new ArrayList<Turno>(); 
+		Timestamp actual = new Timestamp(System.currentTimeMillis());
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		s.beginTransaction();
+		List<TurnoEntity> turnosMed = s.createQuery("from TurnoEntity t where t.idUsrMed = ?0 and t.fecha >= ?1").setParameter(0, idUsrMed).setParameter(1, actual).list();
+		s.getTransaction().commit();
+		s.close();
+		for(TurnoEntity te : turnosMed) 
+			lt.add(toNegocio(te));
+		return lt;
+	}
+	
+	public String espDelDia(int idUsrMed, String fecha) {
+		Timestamp inicioDia = CalculosFechas.getInstancia().deStringATimestamp(fecha, "00:00");
+		Timestamp finDia = CalculosFechas.getInstancia().deStringATimestamp(fecha, "23:59");
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		s.beginTransaction();
+		String especialidad = (String) s.createQuery("select t.especialidad from TurnoEntity t where t.idUsrMed = ?0 and t.fecha >= ?1 and t.fecha <= ?2").setParameter(0, idUsrMed).setParameter(1, inicioDia).setParameter(2, finDia).setMaxResults(1).uniqueResult();
+		s.getTransaction().commit();
+		s.close();
+		return especialidad;
+	}
+	
+	public List<Turno> turnosEnFecha(int idUsrMed, String fecha) {
+		List<Turno> lt = new ArrayList<Turno>(); 
+		Timestamp inicioDia = CalculosFechas.getInstancia().deStringATimestamp(fecha, "00:00");
+		Timestamp finDia = CalculosFechas.getInstancia().deStringATimestamp(fecha, "23:59");
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		s.beginTransaction();
+		List<TurnoEntity> turnosMed = s.createQuery("from TurnoEntity t where t.idUsrMed = ?0 and t.fecha >= ?1 and t.fecha <= ?2").setParameter(0, idUsrMed).setParameter(1, inicioDia).setParameter(2, finDia).list();
+		s.getTransaction().commit();
+		s.close();
+		for(TurnoEntity te : turnosMed) 
+			lt.add(toNegocio(te));
+		return lt;
+	}
+		
 	public void update(Turno t) {
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		TurnoEntity te = toEntity(t);
@@ -50,6 +87,15 @@ public class TurnoDAO {
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		s.beginTransaction();
 		s.save(nuevo);
+		s.getTransaction().commit();
+		s.close();
+	}
+	
+	public void delete(Turno t) {
+		TurnoEntity te = toEntity(t);
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		s.beginTransaction();
+		s.delete(te);
 		s.getTransaction().commit();
 		s.close();
 	}

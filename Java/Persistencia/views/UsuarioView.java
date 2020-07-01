@@ -1,35 +1,27 @@
 package views;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UsuarioView {
 
-	private String username, password, nombre, apellido, fechaDeNacimiento;
-	private int id, dni;
+	private String username, nombre, apellido, fechaDeNacimiento;
+	private int dni;
 	private char sexo;
-	private List<RolView> roles;
+	//private List<RolView> roles;
 	
 	public UsuarioView() {
 	}
 
-	public UsuarioView(int id, String username, String password, String nombre, String apellido, String fechaDeNacimiento, int dni, char sexo, List<RolView> lr) {
-		this.id = id;
+	public UsuarioView(String username, String nombre, String apellido, String fechaDeNacimiento, int dni, char sexo) {
 		this.username = username;
-		this.password = password;
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.fechaDeNacimiento = fechaDeNacimiento;
 		this.dni = dni;
 		this.sexo = sexo;
-		this.roles = lr;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
+//		roles = new ArrayList<RolView>();
+//		this.roles = lr;
 	}
 
 	public String getUsername() {
@@ -38,14 +30,6 @@ public class UsuarioView {
 
 	public void setUsername(String username) {
 		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
 	}
 
 	public String getNombre() {
@@ -88,19 +72,18 @@ public class UsuarioView {
 		this.sexo = sexo;
 	}
 
-	public List<RolView> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(List<RolView> roles) {
-		this.roles = roles;
-	}
-
 	@Override
 	public String toString() {
-		return "UsuarioView [username=" + username + ", password=" + password + ", nombre=" + nombre + ", apellido="
-				+ apellido + ", fechaDeNacimiento=" + fechaDeNacimiento + ", id=" + id + ", dni=" + dni + ", sexo="
-				+ sexo + ", roles=" + roles + "]";
+		return "UsuarioView [username=" + username + ", nombre=" + nombre + ", apellido=" + apellido
+				+ ", fechaDeNacimiento=" + fechaDeNacimiento + ", dni=" + dni + ", sexo=" + sexo + "]";
 	}
+
+//	public List<RolView> getRoles() {
+//		return roles;
+//	}
+//
+//	public void setRoles(List<RolView> roles) {
+//		this.roles = roles;
+//	}
 
 }

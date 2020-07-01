@@ -1,9 +1,12 @@
 package controlador;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import daos.RolDAO;
 import daos.TurnoDAO;
 import daos.UsuarioDAO;
+import modelo.Medico;
 import modelo.Paciente;
 import modelo.Rol;
 import modelo.Turno;
@@ -24,7 +27,7 @@ public class Controlador {
 		return instancia;
 	}
 
-	public boolean verficarLogin(String username, String password) {
+	public boolean verificarLogin(String username, String password) {
 		Usuario usr = new UsuarioDAO().getUsuarioByUsername(username);
 		if (usr.verificarLogin(username, password))
 			return true;
@@ -32,12 +35,6 @@ public class Controlador {
 			return false;
 	}
 	
-	public TurnoView buscarTurnoIndividual(int idUsrMed, String fecha, String hora) {
-		Turno turno = new TurnoDAO().getTurnoIndividual(idUsrMed, fecha, hora);
-		TurnoView tv = turno.toView();
-		return tv;
-	}
-
 	public UsuarioView obtenerUsuario(String username) {
 		Usuario usr = usrConRoles(username);
 		if(usr != null) {
@@ -49,6 +46,31 @@ public class Controlador {
 		}
 	}
 	
+	public UsuarioView inicioDeSesion(String username, String password) {
+		boolean login = verificarLogin(username, password);
+		if(login) {
+			UsuarioView uv = obtenerUsuario(username);
+			return uv;
+		} else {
+			return null;
+		}
+	}
+	
+	public TurnoView buscarTurnoIndividual(int idUsrMed, String fecha, String hora) {
+		Turno turno = new TurnoDAO().getTurnoIndividual(idUsrMed, fecha, hora);
+		TurnoView tv = turno.toView();
+		return tv;
+	}
+	
+	public List<TurnoView> proxTurnosPaciente(int idUsrPac) {
+		List<Turno> turnos = new Paciente(idUsrPac).misTurnos();
+		List<TurnoView> lt = new ArrayList<TurnoView>();
+		for(Turno t : turnos) {
+			lt.add(t.toView());
+		}
+		return lt;
+	}
+
 	private Usuario usrConRoles(String username) {
 		Usuario usr = new UsuarioDAO().getUsuarioByUsername(username);
 		if(usr != null) {
@@ -79,4 +101,44 @@ public class Controlador {
 		return respuesta;
 	}
 	
+	public List<TurnoView> proxTurnosMedico(int idUsrMed) {
+		List<Turno> turnos = new Medico(idUsrMed).proximosTurnos();
+		List<TurnoView> lt = new ArrayList<TurnoView>();
+		for(Turno t : turnos) {
+			lt.add(t.toView());
+		}
+		return lt;
+	}
+	
+	public String agendarNuevoTurnoIndividual(int idUsrMed, String esp, String fecha, String hora) {
+		String resultado = new Medico(idUsrMed).agendarTurnoIndividual(esp, fecha, hora);
+		return resultado;
+	}
+	
+	public String agendarPeriodoMedico(int idUsrMed, String esp, Map<String, List<String>> horarios) {
+		String resultado = new Medico(idUsrMed).agendarPeriodo(esp, horarios);
+		return resultado;
+	}
+	
+	public String eliminacionTurnoIndividual(int idUsrMed, String fecha, String hora) {
+		String resultado = new Medico(idUsrMed).eliminarTurnoIndividual(fecha, hora);
+		return resultado;
+	}
+	
+	public String eliminarPeriodoMedico(int idUsrMed, Map<String, List<String>> horarios) {
+		String resultado = new Medico(idUsrMed).eliminarPeriodo(horarios);
+		return resultado;		
+	}
+	
 }
+
+
+
+
+
+
+
+
+
+
+

@@ -1,6 +1,7 @@
 package modelo;
 
 import daos.TurnoDAO;
+import daos.UsuarioDAO;
 import views.TurnoView;
 
 public class Turno {
@@ -35,6 +36,11 @@ public class Turno {
 	public void guardar() {
 		TurnoDAO td = new TurnoDAO();
 		td.save(this);
+	}
+	
+	public void eliminar() {
+		TurnoDAO td = new TurnoDAO();
+		td.delete(this);
 	}
 	
 	public int getId() {
@@ -100,7 +106,9 @@ public class Turno {
 	}
 	
 	public TurnoView toView() {
-		return new TurnoView(this.id, this.fecha, this.hora, this.especialidad, this.estado, this.idUsrMed, this.idUsrPac);
+		Usuario usrPac = new UsuarioDAO().getUsuarioByID(idUsrPac);
+		Usuario usrMed = new UsuarioDAO().getUsuarioByID(idUsrMed);
+		return new TurnoView(this.id, this.fecha, this.hora, this.especialidad, this.estado, this.idUsrPac, usrPac.toView(), this.idUsrMed, usrMed.toView());
 	}
 	
 }
