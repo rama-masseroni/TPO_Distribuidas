@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import controlador.Controlador;
 import daos.MedicoDAO;
 import daos.PacienteDAO;
@@ -107,7 +108,7 @@ public class prueba {
 //		System.out.println(uv.toString());
 
 //		// RESERVA DE TURNO - Update en tabla
-//		String reserva = Controlador.getInstancia().reservarTurno(7, 3, "Infectologia", "2020-07-20", "15:30");
+//		String reserva = Controlador.getInstancia().reservarTurno(7, 3, "Neumonologia", "2020-07-30", "12:45");
 //		System.out.println(reserva);
 
 //		// CANCELAR UN TURNO
@@ -133,7 +134,7 @@ public class prueba {
 //		System.out.println(resultado);
 
 //		// eliminar turno individual
-//		String res = Controlador.getInstancia().eliminacionTurnoIndividual(3, "2020-07-03", "15:00");
+//		String res = Controlador.getInstancia().eliminacionTurnoIndividual(3, "2020-07-03", "10:30");
 //		System.out.println(res);
 		
 //		// CREAR PERÍODO DE TURNOS
@@ -152,13 +153,13 @@ public class prueba {
 //		// ELIMINAR PERÍODO DE TURNOS DE UN MÉDICO
 //		Map<String, List<String>> horarios = new HashMap<>();
 //		List<String> primerDia = new ArrayList<>();
-//		List<String> segundoDia = new ArrayList<>();
+//		//List<String> segundoDia = new ArrayList<>();
+//		primerDia.add("15:00");
 //		primerDia.add("15:15");
-//		primerDia.add("15:30");
-//		segundoDia.add("09:30");
-//		segundoDia.add("09:45");
-//		horarios.put("2020-07-20", primerDia);
-//		horarios.put("2020-07-29", segundoDia);
+//		//segundoDia.add("11:00");
+//		//segundoDia.add("11:15");
+//		horarios.put("2020-07-03", primerDia);
+//		//horarios.put("2020-07-20", segundoDia);
 //		String resultado = Controlador.getInstancia().eliminarPeriodoMedico(3, horarios);
 //		System.out.println(resultado);
 		
