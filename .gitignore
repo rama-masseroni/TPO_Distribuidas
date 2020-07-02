@@ -97,3 +97,30 @@ hs_err_pid*
 *.xml
 *.properties
 *.MF
+Java/API Rest/.classpath
+Java/API Rest/pom.xml
+Java/API Rest/src/main/webapp/WEB-INF/views/home.jsp
+Java/Persistencia/.classpath
+Java/Persistencia/.project
+Java/Persistencia/controlador/Controlador.class
+Java/Persistencia/daos/MedicoDAO.class
+Java/Persistencia/daos/PacienteDAO.class
+Java/Persistencia/daos/RolDAO.class
+Java/Persistencia/daos/TurnoDAO.class
+Java/Persistencia/daos/UsuarioDAO.class
+Java/Persistencia/entities/MedicoEntity.class
+Java/Persistencia/entities/PacienteEntity.class
+Java/Persistencia/entities/RolEntity.class
+Java/Persistencia/entities/TurnoEntity.class
+Java/Persistencia/entities/UsuarioEntity.class
+Java/Persistencia/hibernate/HibernateUtil.class
+Java/Persistencia/modelo/Medico.class
+Java/Persistencia/modelo/Paciente.class
+Java/Persistencia/modelo/Rol.class
+Java/Persistencia/modelo/Turno.class
+Java/Persistencia/modelo/Usuario.class
+Java/Persistencia/test/prueba.class
+Java/Persistencia/utilitarios/CalculosFechas.class
+Java/Persistencia/views/RolView.class
+Java/Persistencia/views/TurnoView.class
+Java/Persistencia/views/UsuarioView.class
