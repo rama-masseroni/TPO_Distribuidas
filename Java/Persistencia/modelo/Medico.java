@@ -86,13 +86,13 @@ public class Medico extends Rol {
 			if (espDia.equals(esp) && CalculosFechas.getInstancia().puedeAgendar(fecha)) {
 				TurnoDAO td = new TurnoDAO();
 				List<Turno> lt = td.turnosEnFecha(this.idUsr, fecha);
-				while(!lt.isEmpty() && !turnos.isEmpty()) {
+				while (!lt.isEmpty() && !turnos.isEmpty()) {
 					Turno t1 = lt.get(0);
 					boolean coincide = false;
-					for(String t2 : turnos)
-						if(t2.equals(t1.getHora()))
+					for (String t2 : turnos)
+						if (t2.equals(t1.getHora()))
 							coincide = true;
-					if(coincide) {
+					if (coincide) {
 						turnos.remove(t1.getHora());
 						lt.remove(t1);
 						todosGuardados = false;
@@ -100,12 +100,12 @@ public class Medico extends Rol {
 						lt.remove(t1);
 					}
 				}
-				if(!turnos.isEmpty())
-					for(String t : turnos) {
+				if (!turnos.isEmpty())
+					for (String t : turnos) {
 						Turno nuevo = new Turno(fecha, t, esp, "Disponible", this.idUsr, 1);
 						nuevo.guardar();
 					}
-			// NO TIENE TURNOS CARGADOS ESE DÍA
+				// NO TIENE TURNOS CARGADOS ESE DÍA
 			} else if (espDia.equals("Disponible") && CalculosFechas.getInstancia().puedeAgendar(fecha)) {
 				for (String t : turnos) {
 					Turno nuevo = new Turno(fecha, t, esp, "Disponible", this.idUsr, 1);
@@ -124,41 +124,48 @@ public class Medico extends Rol {
 	public String eliminarTurnoIndividual(String fecha, String hora) {
 		if (CalculosFechas.getInstancia().puedeModificarAgenda(fecha)) {
 			Turno t = new TurnoDAO().getTurnoIndividual(idUsr, fecha, hora);
-			t.eliminar();
-			return "Su turno se elimino de forma exitosa";
+			if (t.getEstado().equals("Disponible")) {
+				t.eliminar();
+				return "Su turno se elimino de forma exitosa";
+			} else {
+				return "No puede eliminar turnos que ya han sido reservados";
+			}
 		} else {
 			return "No puede modificar turnos con anterioridad inferior a una semana";
 		}
 	}
-	
+
 	public String eliminarPeriodo(Map<String, List<String>> horarios) {
 		boolean eliminacionExitosa = true;
 		for (Map.Entry<String, List<String>> entry : horarios.entrySet()) {
 			String fecha = entry.getKey();
 			List<String> turnos = entry.getValue();
-			if(CalculosFechas.getInstancia().puedeModificarAgenda(fecha)) {
+			if (CalculosFechas.getInstancia().puedeModificarAgenda(fecha)) {
 				TurnoDAO td = new TurnoDAO();
 				List<Turno> lt = td.turnosEnFecha(this.idUsr, fecha);
-				while(!turnos.isEmpty() && !lt.isEmpty()) {
+				while (!turnos.isEmpty() && !lt.isEmpty()) {
 					Turno t1 = lt.get(0);
 					boolean coincide = false;
-					for(String t2 : turnos)
-						if(t2.equals(t1.getHora()))
+					for (String t2 : turnos)
+						if (t2.equals(t1.getHora()))
 							coincide = true;
-					if(coincide) {
+					if (coincide && t1.getEstado().equals("Disponible")) {
 						t1.eliminar();
 						turnos.remove(t1.getHora());
 						lt.remove(t1);
-					} else {
+					} else if (coincide) {
 						turnos.remove(t1.getHora());
+						lt.remove(t1);
 						eliminacionExitosa = false;
+					} else {
+						lt.remove(t1);
 					}
 				}
 			} else {
 				eliminacionExitosa = false;
 			}
 		}
-		if(eliminacionExitosa)
+		if (eliminacionExitosa)
 			return "Sus turnos se eliminaron de forma exitosa";
 		else
 			return "Sus turnos o algunos de ellos no pudieron eliminarse";
@@ -170,26 +177,3 @@ public class Medico extends Rol {
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
