@@ -11,6 +11,8 @@
  	<mapping class="entities.RolEntity"/>
  	<mapping class="entities.TurnoEntity"/>
  	<mapping class="entities.PacienteEntity"/>
+ 	<mapping class="entities.MedicoEntity"/>
+ 	<mapping class="entities.TurnoEnEsperaEntity"/>
 	
   </session-factory>
 </hibernate-configuration>

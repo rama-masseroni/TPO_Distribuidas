@@ -1,16 +1,25 @@
-package modelo;
+package entities;
 
-import daos.TurnoEnEsperaDAO;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-public class TurnoEnEspera {
-	
+@Entity
+@Table (name = "TurnosEnEspera")
+public class TurnoEnEsperaEntity {
+	@Id
+	@Column (name = "especialidad")
 	private String especialidad;
-	private int idUsrPac, idUsrMed;
+	@Column (name = "idUsrPac")
+	private int idUsrPac;
+	@Column (name = "idUsrMed")
+	private int idUsrMed;
 	
-	public TurnoEnEspera() {
+	public TurnoEnEsperaEntity() {
 	}
 	
-	public TurnoEnEspera(String especialidad, int idUsrPac, int idUsrMed) {
+	public TurnoEnEsperaEntity(String especialidad, int idUsrPac, int idUsrMed) {
 		this.especialidad = especialidad;
 		this.idUsrPac = idUsrPac;
 		this.idUsrMed = idUsrMed;
@@ -42,18 +51,8 @@ public class TurnoEnEspera {
 	
 	@Override
 	public String toString() {
-		return "TurnoEnEspera [especialidad=" + especialidad + ", idUsrPac=" + idUsrPac + ", idUsrMed=" + idUsrMed
+		return "TurnoEnEsperaEntity [especialidad=" + especialidad + ", idUsrPac=" + idUsrPac + ", idUsrMed=" + idUsrMed
 				+ "]";
-	}
-	
-	public void guardar() {
-		TurnoEnEsperaDAO td = new TurnoEnEsperaDAO();
-		td.save(this);
-	}
-	
-	public void eliminar() {
-		TurnoEnEsperaDAO td = new TurnoEnEsperaDAO();
-		td.delete(this);
 	}
 	
 }
