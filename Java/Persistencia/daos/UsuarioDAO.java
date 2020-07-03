@@ -3,10 +3,13 @@ package daos;
 import java.util.List;
 
 import org.hibernate.Session;
+
+import entities.MedicoEntity;
 import entities.UsuarioEntity;
 import hibernate.HibernateUtil;
 import modelo.Rol;
 import modelo.Usuario;
+import views.UsuarioView;
 
 public class UsuarioDAO {
 	
@@ -65,6 +68,7 @@ public class UsuarioDAO {
 	Usuario toNegocio(UsuarioEntity usr, List<Rol> lr) {
 		return new Usuario(usr.getId(), usr.getUsername(), usr.getPassword(), usr.getNombre(), usr.getApellido(), usr.getFechaDeNacimiento().toString(), usr.getDni(), usr.getSexo(), lr);
 	}
+
 	
 
 }

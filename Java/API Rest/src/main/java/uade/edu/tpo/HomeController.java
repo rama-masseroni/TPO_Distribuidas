@@ -22,6 +22,9 @@ import daos.UsuarioDAO;
 import modelo.Paciente;
 import modelo.Turno;
 import modelo.Usuario;
+import views.RolView;
+import views.TurnoView;
+import views.UsuarioView;
 
 /**
  * Handles requests for the application home page.
@@ -29,9 +32,7 @@ import modelo.Usuario;
 @Controller
 public class HomeController {
 
-	private String nomSession, apeSession, fdnSession;
-	private int dniSession;
-
+	private UsuarioView userSession;
 	private ObjectMapper om = new ObjectMapper();
 	private String res = null;
 
@@ -53,6 +54,16 @@ public class HomeController {
 
 		return "home";
 	}
+	
+	@RequestMapping(value = "/buscarTurnos", method = RequestMethod.POST, produces = { "application/json" })
+	public @ResponseBody <json> String buscarTurno(@RequestParam(value = "dia", required = true) Date dia,
+			@RequestParam(value = "esp", required = true) String especialidad) throws JsonProcessingException{
+		List<TurnoView> turnos = Controlador.getInstancia().buscarTurnos(dia, especialidad);
+		for(TurnoView tv : turnos) System.out.println(tv.toString());
+		return om.writeValueAsString(turnos);
+//		return om.writeValueAsString(Controlador.getInstancia().buscarTurnos(dia, especialidad));
+	}
+
 
 	@RequestMapping(value = "/getUserByID", method = RequestMethod.POST, produces = { "application/json" })
 	public @ResponseBody <json> String getUsuarioByID(@RequestParam(value = "id", required = true) int id)
@@ -62,32 +73,57 @@ public class HomeController {
 			res = om.writeValueAsString(usr);
 		return res;
 	}
+	
 
-	@RequestMapping(value = "/misTurnos", method = RequestMethod.POST, produces = { "application/json" })
-	public @ResponseBody <json> String misTurnos(@RequestParam(value = "id", required = true) int id)
-			throws JsonProcessingException {
-		List<Turno> lt = new Paciente(id).misTurnos();
-		if (!lt.isEmpty())
-			res = om.writeValueAsString(lt);
-		return res;
+	@RequestMapping(value = "/getMedicos", method = RequestMethod.GET, produces = { "application/json" })
+	public @ResponseBody <json> String getUsuarioByID() throws JsonProcessingException {
+		List<UsuarioView> select = Controlador.getInstancia().getAllMeds();
+		return om.writeValueAsString(select);
+
+	}
+
+	@RequestMapping(value = "/getEspecialidades", method = RequestMethod.GET, produces = { "application/json" })
+	public @ResponseBody <json> String getEspecialidades() throws JsonProcessingException {
+		return om.writeValueAsString(Controlador.getInstancia().getEspecialidades());
+
+	}
+
+	@RequestMapping(value = "/getRoles", method = RequestMethod.GET, produces = { "application/json" })
+	public @ResponseBody <json> String getRoles() throws JsonProcessingException {
+		// 0 = Paciente; 1 = Médico; 2 = ambos.
+		List<RolView> roles = userSession.getRoles();
+		switch (roles.size()) {
+		case 1:
+			if (roles.get(0).getNombreRol().equals("Paciente"))
+				return om.writeValueAsString(0);
+			else if (roles.get(0).getNombreRol().equals("Medico"))
+				return om.writeValueAsString(1);
+			else
+				return om.writeValueAsString(null);
+
+		case 2:
+			return om.writeValueAsString(2);
+		default:
+			return om.writeValueAsString(null);
+		}
+
+	}
+
+	@RequestMapping(value = "/misTurnos", method = RequestMethod.GET, produces = { "application/json" })
+	public @ResponseBody <json> String misTurnos() throws JsonProcessingException {
+		List<TurnoView> res = Controlador.getInstancia().proxTurnosPaciente(userSession.getRoles().get(0).getIdUsr());
+		return om.writeValueAsString(res);
 	}
 
 	@RequestMapping(value = "/verificarLogin", method = RequestMethod.POST, produces = { "application/json" })
 	public @ResponseBody <json> String verificarLogin(@RequestParam(value = "usuario", required = true) String usuario,
 			@RequestParam(value = "password", required = true) String password) throws JsonProcessingException {
-		boolean b = false;
-		System.out.println(usuario + ' ' + password);
-		Usuario usr = Controlador.getInstancia().verficarLogin(usuario, password);
-		if (usr != null) {
-			b = true;
-			res = om.writeValueAsString(usr);
-			this.nomSession = usr.getNombre();
-			this.apeSession = usr.getApellido();
-			this.fdnSession = usr.getFechaDeNacimiento();
-			this.dniSession = usr.getDni();
-		}
-		System.out.println(b);
-		return res;
+		boolean b = Controlador.getInstancia().verificarLogin(usuario, password);
+		if (b) {
+			userSession = Controlador.getInstancia().inicioDeSesion(usuario, password);
+			return om.writeValueAsString(userSession);
+		} else
+			return om.writeValueAsString(null);
 	}
 
 }

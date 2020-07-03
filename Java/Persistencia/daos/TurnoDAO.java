@@ -8,6 +8,7 @@ import entities.TurnoEntity;
 import hibernate.HibernateUtil;
 import modelo.Turno;
 import utilitarios.CalculosFechas;
+import views.TurnoView;
 
 public class TurnoDAO {
 	
@@ -20,6 +21,19 @@ public class TurnoDAO {
 		s.close();
 		Turno turno = toNegocio(te);
 		return turno;		
+	}
+	
+	public List<Turno> getTurnosConObligatorios(String fecha, String hora, String especialidad) {
+		Timestamp ts = CalculosFechas.getInstancia().deStringATimestamp(fecha, hora);
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		s.beginTransaction();
+		List<TurnoEntity> select = (List<TurnoEntity>) s.createQuery("from TurnoEntity t where t.fecha = ?0 and t.especialidad = ?1 and t.estado = ?2").setParameter(0, ts).setParameter(1, especialidad).setParameter(2, "Disponible").list();
+		s.getTransaction().commit();
+		s.close();
+		List<Turno> result = new ArrayList<Turno>();
+		for(TurnoEntity te: select)
+			result.add(toNegocio(te));
+		return result;
 	}
 	
 	public List<Turno> getProxTurnosPaciente(int idUsrPac) {
@@ -112,5 +126,6 @@ public class TurnoDAO {
 		String hora = fechaCompleta.substring(11, 16);
 		return new Turno(t.getId(), fecha, hora, t.getEspecialidad(), t.getEstado(), t.getIdUsrMed(), t.getIdUsrPac());
 	}
+
 		
 }

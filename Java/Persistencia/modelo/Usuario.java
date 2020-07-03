@@ -161,9 +161,9 @@ public class Usuario {
 	
 	public UsuarioView toView() {
 		List<RolView> rv = new ArrayList<RolView>();
-		//for(Rol r : roles)
-		//	rv.add(r.toView());
-		return new UsuarioView(username, nombre, apellido, fechaDeNacimiento, dni, sexo);
+		for(Rol r : roles)
+			rv.add(r.toView());
+		return new UsuarioView(username, nombre, apellido, fechaDeNacimiento, dni, sexo, rv);
 	}
 
 }

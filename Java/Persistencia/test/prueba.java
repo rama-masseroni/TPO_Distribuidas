@@ -180,7 +180,9 @@ public class prueba {
 		
 
 
-
+		List<UsuarioView> medicos = Controlador.getInstancia().getAllMeds();
+		for(UsuarioView uv: medicos)
+			System.out.println(uv.toString());
 		
 
 

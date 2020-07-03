@@ -8,20 +8,19 @@ public class UsuarioView {
 	private String username, nombre, apellido, fechaDeNacimiento;
 	private int dni;
 	private char sexo;
-	//private List<RolView> roles;
+	private List<RolView> roles;
 	
 	public UsuarioView() {
 	}
 
-	public UsuarioView(String username, String nombre, String apellido, String fechaDeNacimiento, int dni, char sexo) {
+	public UsuarioView(String username, String nombre, String apellido, String fechaDeNacimiento, int dni, char sexo, List<RolView> roles) {
 		this.username = username;
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.fechaDeNacimiento = fechaDeNacimiento;
 		this.dni = dni;
 		this.sexo = sexo;
-//		roles = new ArrayList<RolView>();
-//		this.roles = lr;
+		this.setRoles(roles);
 	}
 
 	public String getUsername() {
@@ -70,6 +69,14 @@ public class UsuarioView {
 
 	public void setSexo(char sexo) {
 		this.sexo = sexo;
+	}
+
+	public List<RolView> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<RolView> roles) {
+		this.roles = roles;
 	}
 
 	@Override
