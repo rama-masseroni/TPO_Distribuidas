@@ -127,6 +127,7 @@ public class Paciente extends Rol {
 	}
 
 	public String confirmarAsistencia(String fecha, String hora) {
+		boolean intervinoCM = false;
 		CalculosFechas calc = new CalculosFechas();
 		Date fechaDelTurno = calc.deStringADateUtil(fecha, hora);
 		Date confInicial = calc.sumarHorasAFecha(fechaDelTurno, -12);
@@ -136,11 +137,16 @@ public class Paciente extends Rol {
 			TurnoDAO td = new TurnoDAO();
 			List<Turno> lt = misTurnos();
 			for (Turno t : lt)
-				if (t.getFecha().equals(fecha) && t.getHora().equals(hora)) {
+				if (t.getFecha().equals(fecha) && t.getHora().equals(hora) && t.getEstado().equals("Reservado")) {
 					t.setEstado("Confirmado");
 					td.update(t);
+				} else if (t.getFecha().equals(fecha) && t.getHora().equals(hora) && t.getEstado().equals("CanceladoCM")) {
+					intervinoCM = true;
 				}
-			return "Ha confirmado el turno exitosamente!";
+			if(intervinoCM)
+				return "Su turno ha sido cancelado debido a un improvisto. Lo contactaremos para su reprogramacion";
+			else
+				return "Ha confirmado el turno exitosamente!";
 		} else {
 			if (fechaHsActual.compareTo(confInicial) < 0) {
 				return "Todavía no puede confirmar este turno, debe esperar hasta doce horas antes del mismo.";

@@ -43,6 +43,11 @@ public class Turno {
 		td.delete(this);
 	}
 	
+	public void actualizar() {
+		TurnoDAO td = new TurnoDAO();
+		td.update(this);
+	}
+	
 	public int getId() {
 		return id;
 	}

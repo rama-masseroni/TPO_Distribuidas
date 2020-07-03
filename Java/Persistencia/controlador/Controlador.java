@@ -130,6 +130,13 @@ public class Controlador {
 		return resultado;		
 	}
 	
+	public String cancelacionXParteDelCM(int idUsrMed, String fecha, String hora) {
+		Turno t = new TurnoDAO().getTurnoIndividual(idUsrMed, fecha, hora);
+		t.setEstado("CanceladoCM");
+		t.actualizar();
+		return "Se cancelo el turno";
+	}
+	
 }
 
 

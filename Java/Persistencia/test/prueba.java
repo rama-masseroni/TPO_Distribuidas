@@ -107,15 +107,19 @@ public class prueba {
 //		System.out.println(uv.toString());
 
 //		// RESERVA DE TURNO - Update en tabla
-//		String reserva = Controlador.getInstancia().reservarTurno(7, 3, "Infectologia", "2020-07-20", "15:30");
+//		String reserva = Controlador.getInstancia().reservarTurno(4, 3, "Infectologia", "2020-07-03", "15:15");
 //		System.out.println(reserva);
+		
+//		//CANCELACIÓN POR PARTE DEL CENTRO MÉDICO
+//		String resultado = Controlador.getInstancia().cancelacionXParteDelCM(3, "2020-07-03", "08:00");
+//		System.out.println(resultado);
 
 //		// CANCELAR UN TURNO
 //		String cancelacion = Controlador.getInstancia().cancelarTurno(5, "2020-09-30", "20:00");
 //		System.out.println(cancelacion);
 
 //		// CONFIRMAR ASISTENCIA
-//		String respuesta = Controlador.getInstancia().confirmarAsistencia(4, "2020-06-01", "21:00");
+//		String respuesta = Controlador.getInstancia().confirmarAsistencia(5, "2020-07-03", "08:15");
 //		System.out.println(respuesta);
 		
 //		// OBTENER LOS TURNOS QUE EL MÉDICO TIENE POR DELANTE
@@ -170,6 +174,9 @@ public class prueba {
 		// ------------------------------------------------------------------------------------------------------------
 		
 
+
+		
+		
 		
 
 
