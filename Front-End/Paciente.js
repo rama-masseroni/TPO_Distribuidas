@@ -12,6 +12,7 @@ const StackPaciente = createStackNavigator();
 
 function Principal({ route, navigation }) {
 
+    // console.log(route.params.datos.id)
 
     return (
         <LinearGradient
@@ -39,25 +40,30 @@ function Principal({ route, navigation }) {
                 <View>
                     <Text style={[styles.header, { marginTop: 70 }]}>Bienvenido!</Text>
                     <View style={styles.dataBox}>
-                        <Text style={{ fontSize: 30, fontWeight: 'bold', }}>{route.params.ape},</Text>
-                        <Text style={{ fontSize: 30, fontWeight: 'bold', }}>{route.params.nom}</Text>
-                        <Text style={{ fontSize: 20, }}>{route.params.dni}</Text>
-                        <View style={{ flexDirection: 'row' }}>
+                        <Text style={{ fontSize: 30, fontWeight: 'bold', }}>{route.params.datos.apellido},</Text>
+                        <Text style={{ fontSize: 30, fontWeight: 'bold', }}>{route.params.datos.nombre}</Text>
+                        <Text style={{ fontSize: 20, }}>{route.params.datos.dni}</Text>
+                        {/* <View style={{ flexDirection: 'row' }}>
                             <Text style={{ fontSize: 20, }}>Pagos: </Text>
-                            <Text style={{ flex: 2, fontSize: 20, color: 'green' }}>Al día!</Text>
-                        </View>
+                            <Text style={{ flex: 2, fontSize: 20, color: 'green' }}>{route.params.pagos ? 'Al día!' : 'En deuda.'}</Text>
+                        </View> */}
                     </View>
                 </View>
                 <View style={{ marginTop: 20, }}>
                     <Text style={styles.subHeader}>Turnos Programados</Text>
                     <View style={styles.turnosCont}>
-                        <FetchApp id={route.params.id}/>
+                        <FetchApp id={route.params.datos.id} />
                     </View>
                 </View>
                 <TouchableOpacity
                     activeOpacity={.7}
                     style={[styles.primaryButton, { marginTop: 50, }]}
-                    onPress={() => { navigation.navigate('IngresarTurno'); }}>
+                    onPress={() => {
+                        navigation.navigate('IngresarTurno', {
+                            idPac: route.params.datos.id,
+                        }
+                        );
+                    }}>
                     <View>
                         <Text style={{ color: '#FFFF', fontSize: 20, fontWeight: 'bold', borderColor: '#ff3434' }}>Nuevo Turno</Text>
                     </View>
@@ -66,11 +72,14 @@ function Principal({ route, navigation }) {
         </LinearGradient>
     );
 }
-function IngresarTurno({ navigation }) {
+function IngresarTurno({ route, navigation }) {
     const [dataEsp, setDataEsp] = useState([]);
     const [selectedEsp, setSelectedEsp] = useState();
+    const [dataMed, setDataMed] = useState([]);
     const [selectedMed, setSelectedMed] = useState();
 
+    const {idPac} = route.params;
+    console.log(idPac);
 
     const [dia, setDia] = useState(new Date());
     const [datePickMode, setMode] = useState('date');
@@ -102,27 +111,32 @@ function IngresarTurno({ navigation }) {
 
 
     useEffect(() => {
-        fetch('https://jsonplaceholder.typicode.com/users')
+        fetch('http://192.168.0.160:1234/tpo/getEspecialidades')
             .then((response) => response.json())
             .then((json) => setDataEsp(json))
             .then(() => setSelectedEsp(''))
             .catch((error) => console.error(error))
-            .finally(() => setSelectedMed(''));
+        // .finally(() => setSelectedEsp(''));
+
+
+        fetch('http://192.168.0.160:1234/tpo/getMedicos')
+            .then((response) => response.json())
+            .then((json) => setDataMed(json))
+            .then(() => setSelectedMed(''))
+            .catch((error) => console.error(error));
+        // .finally(() => setSelectedMed(''));
     }, []);
 
     let listaEspe = dataEsp.map((myValue, indice) => {
         return (
-            <Picker.Item label={myValue.name} value={indice} key={indice} />
+            <Picker.Item label={myValue} value={myValue} key={indice} />
         )
     });
 
-    function getMedicos(){
-        
-    }
 
     let listaMed = dataMed.map((myValue, indice) => {
-        return(
-            <Picker.Item label= {myValue.nombre} value={myValue.id}/>
+        return (
+            <Picker.Item label={myValue.nombre + ' ' + myValue.apellido} value={indice} key={indice} />
         )
     })
 
@@ -161,7 +175,10 @@ function IngresarTurno({ navigation }) {
                         <Picker
                             selectedValue={selectedEsp}
                             style={{ color: 'black' }}
-                            onValueChange={(value) => { setSelectedEsp(value); }}>
+                            onValueChange={(myValue, indice) => {
+                                setSelectedEsp(myValue);
+                                console.log(selectedEsp);
+                            }}>
 
                             <Picker.Item value='' label='Elija una especialidad...' />
                             {listaEspe}
@@ -257,11 +274,13 @@ function IngresarTurno({ navigation }) {
                             <Picker
                                 selectedValue={selectedMed}
                                 style={{ color: 'black' }}
-                                onPress={() => {getMedicos();}}
-                                onValueChange={(value) => { setSelectedMed(value); }}>
+                                onValueChange={(myValue, indice) => {
+                                    setSelectedMed(myValue);
+                                    console.log(selectedMed);
+                                }}>
 
-                                <Picker.Item value='' label='Elija una especialidad...' />
-                                {listaEspe}
+                                <Picker.Item value='' label='Elija un médico...' />
+                                {listaMed}
                             </Picker>
 
                         </View>
@@ -271,15 +290,44 @@ function IngresarTurno({ navigation }) {
 
                     </View>
                 </View>
-                <TouchableOpacity activeOpacity={.7} style={[styles.primaryButton, { marginTop: 70 }]} onPress={() => { navigation.navigate('ElegirTurno') }}>
+                <TouchableOpacity
+                    activeOpacity={.7}
+                    style={[styles.primaryButton, { marginTop: 70 }]}
+                    onPress={() => {
+                        let options = { dateStyle: 'full', timeStyle: 'medium' };
+                        options.timeZone = 'UTC-3';
+                        console.log(idPac);
+                        // console.log(selectedEsp);
+                        // console.log(dia.toLocaleDateString('en-us', options));
+                        // console.log(dia.toLocaleString('en-us', options));
+                        navigation.navigate('ElegirTurno',
+                            {
+                                dia: dia,
+                                espe: selectedEsp,
+                                id: idPac,
+                                // medico: selectedMed,
+                                // fecha: dia.toLocaleDateString('en-us', options),
+                                // hora: dia.toLocaleTimeString('en-us', options),
+
+                            });
+                        // console.log(Date.parse(dia));
+                    }}
+                >
                     <Text style={{ color: '#FFFF', fontSize: 20, fontWeight: 'bold', borderColor: '#ff3434' }}>Buscar Turnos</Text>
                 </TouchableOpacity>
             </View>
-        </LinearGradient>
+        </LinearGradient >
     );
 }
 
-function ElegirTurno({ navigation }) {
+function ElegirTurno({ route, navigation }) {
+
+    // useEffect(() => {
+    //     console.log(route.params.dia);
+    //     console.log(route.params.espe);
+    // }, []);
+    console.log(route.params.id)
+
     return (
         <LinearGradient
             colors={['#FF3535', 'white']}
@@ -301,7 +349,7 @@ function ElegirTurno({ navigation }) {
                 <View style={{ alignContent: "flex-start" }}>
                     <View style={{ marginTop: 20, }}>
                         <View style={[styles.turnosCont, { height: 510 }]}>
-                            <ListaFindTurnos />
+                            <ListaFindTurnos dia={route.params.dia} espe={route.params.espe} medico={route.params.medico} id={route.params.id}/>
                         </View>
                     </View>
 

@@ -2,7 +2,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState } from 'react';
-import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View, ToastAndroid } from 'react-native';
+import Medico from './Medico';
 import Paciente from './Paciente';
 
 const Stack = createStackNavigator();
@@ -19,12 +20,7 @@ function Registro({ navigation }) {
 
 
   function handleTouch() {
-    let enviar = {}
-    enviar.usuario = user;
-    enviar.password = pass;
-    // console.warn(enviar);
 
-    const data = { username: 'example' };
 
     fetch('http://192.168.0.160:1234/tpo/verificarLogin', {
       method: 'POST', // or 'PUT'
@@ -36,59 +32,58 @@ function Registro({ navigation }) {
     })
       .then(response => response.json())
       .then(data => {
-        if (data != null) {
-          navigation.navigate('Paciente', {screen: 'Principal', params: {
-            ape: data.apellido,
-            nom: data.nombre,
-            dni: data.dni,
-            id: data.id,
-          }});
+        if (data != undefined) {
+          // navigation.navigate('Medico', {
+            navigation.navigate('Paciente', {
+            screen: 'Principal',
+            params: {
+              datos: data,
+            }
+          });
         }
         else
           ToastAndroid.show("Alguno(s) de los datos ingresados es/son incorrectos. Por favor, revise.", ToastAndroid.SHORT);
       })
       .catch((error) => {
-        console.error('Error:', error);
+        console.log('Error:', error);
       });
-}
+  }
 
-return (
+  return (
 
-  <LinearGradient
-    colors={['#FF3535', 'white']}
-    start={[0, 0.2]}
-    end={[0, 0.4]}
-    style={styles.container}
-  >
-    <KeyboardAvoidingView behavior={'position'}>
+    <LinearGradient
+      colors={['#FF3535', 'white']}
+      start={[0, 0.2]}
+      end={[0, 0.4]}
+      style={styles.container}
+    >
+      <KeyboardAvoidingView behavior={'position'}>
 
-      <Text style={styles.titulo}>CRUCIS</Text>
-      <TextInput
-        onChangeText={text => { setUser(text) }}
-        placeholder={"E-Mail"}
-        style={[styles.inputBox, { marginTop: 70 }]}
-        textContentType={"emailAddress"}
-        keyboardType={"email-address"}
-      />
-      <TextInput
-        onChangeText={text => { setPass(text) }}
-        placeholder={"Contraseña"}
-        style={styles.inputBox}
-        textContentType={"password"}
-        secureTextEntry={true}
-      />
-    </KeyboardAvoidingView>
-    <TouchableOpacity activeOpacity={.7} style={{ marginTop: 70 }} onPress={() => {
-      handleTouch()
-    }}>
-      <Text>{exNom}</Text>
-      <Text>{exPass}</Text>
-      <View style={styles.primaryButton} >
-        <Text style={{ color: '#FFFF', fontSize: 20, fontWeight: 'bold', borderColor: '#ff3434' }}>Iniciar Sesión</Text>
-      </View>
-    </TouchableOpacity>
-  </LinearGradient>
-);
+        <Text style={styles.titulo}>CRUCIS</Text>
+        <TextInput
+          onChangeText={text => { setUser(text) }}
+          placeholder={"E-Mail"}
+          style={[styles.inputBox, { marginTop: 70 }]}
+          textContentType={"emailAddress"}
+          keyboardType={"email-address"}
+        />
+        <TextInput
+          onChangeText={text => { setPass(text) }}
+          placeholder={"Contraseña"}
+          style={styles.inputBox}
+          textContentType={"password"}
+          secureTextEntry={true}
+        />
+      </KeyboardAvoidingView>
+      <TouchableOpacity activeOpacity={.7} style={{ marginTop: 70 }} onPress={() => {
+        handleTouch()
+      }}>
+        <View style={styles.primaryButton} >
+          <Text style={{ color: '#FFFF', fontSize: 20, fontWeight: 'bold', borderColor: '#ff3434' }}>Iniciar Sesión</Text>
+        </View>
+      </TouchableOpacity>
+    </LinearGradient>
+  );
 }
 
 
@@ -173,6 +168,10 @@ export default function App() {
         <Stack.Screen
           name="Paciente"
           component={Paciente}
+        />
+        <Stack.Screen
+          name="Medico"
+          component={Medico}
         />
       </Stack.Navigator>
     </NavigationContainer>

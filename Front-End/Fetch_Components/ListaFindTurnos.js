@@ -1,44 +1,88 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Image, ActivityIndicator, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, ActivityIndicator, FlatList, StyleSheet, Text, TouchableOpacity, View, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-export default function ListaFindTurnos({screenName}){
+export default function ListaFindTurnos(props) {
     const [isLoading, setLoading] = useState(true);
-    const [data, setData] = useState([]);
-    const navigation= useNavigation();
-    screenName = 'Principal'
+    const [data, setList] = useState([]);
+    const navigation = useNavigation();
+    // screenName = 'Principal'
 
-    function onConfirm(){
-        navigation.navigate(screenName);
+    const [reply, setReply] = useState('');
+
+    function onConfirm(id, item) {
+        console.log(id);
+        console.log(item.medico.id);
+        console.log(item.especialidad);
+        console.log(item.fecha);
+        console.log(item.hora);
+
+        fetch('http://192.168.0.160:1234/tpo/reservarTurno', {
+            method: 'POST', // or 'PUT'
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'idP=' + id + '&idM=' + item.medico.id + '&esp=' + item.especialidad + '&fecha=' + item.fecha + '&hora=' + item.hora,
+            // {
+            //     idP: id,
+            //     idM: item.medico.id,
+            //     esp: item.especialidad,
+            //     fecha: item.fecha,
+            //     hora: item.hora,
+            // } 
+        }).then((response) => {
+            response.json();
+        }).then(data => {
+            console.log(data);
+            navigation.push('Principal');
+        }).catch((error) => console.error(error));
+
+        // navigation.navigate('Principal');
     }
 
     useEffect(() => {
-        fetch('https://jsonplaceholder.typicode.com/users')
+        // console.log(props.dia);
+        // console.log(props.espe);
+        // console.log(props.medico);
+        // fetch('https://jsonplaceholder.typicode.com/users')
+        // .then((response) => response.json())
+        // .then((json) => setData(json))
+        // .catch((error) => console.error(error))
+        // .finally(() => setLoading(false));
+
+        fetch('http://192.168.0.160:1234/tpo/buscarTurnos', {
+            method: 'POST', // or 'PUT'
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'dia=' + props.dia + '&especialidad=' + props.espe,
+        })
             .then((response) => response.json())
-            .then((json) => setData(json))
+            .then(data => {
+                setList(data);
+                // setSID(data[0].idUsrMed);
+            })
             .catch((error) => console.error(error))
-            .finally(() => setLoading(false));
+            .finally(() => { setLoading(false) });
     }, []);
 
     despliegue = ({ item }) => (
-        <View style={styles.turno}>
+        <View style={[styles.turno, { alignItems: "center" }]}>
             <View style={{ flex: 2 }}>
                 <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
-                    {item.name}
+                    {item.medico.apellido},</Text>
+                <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
+                    {item.medico.nombre}
                 </Text>
 
                 <View style={{ marginTop: 5, marginBottom: 8, flexDirection: 'row' }}>
-                    <Text>DD</Text>
-                    <Text> de </Text>
-                    <Text>MMMM</Text>
-                    <Text style={{ marginStart: 17 }}>HH:MM</Text>
+                    <Text>{item.fecha}</Text>
+                    <Text style={{ marginStart: 17 }}>{item.hora}</Text>
                 </View>
             </View>
-            <View style={{ flex: 1, flexDirection: 'row', marginStart: 40 }}>
-                <TouchableOpacity activeOpacity={.7} onPress={() => {onConfirm()}}>
-                    <Image style={{ height: 60, width: 60 }} source={require('../Images/add_turno.png')} />
-                </TouchableOpacity>
-            </View>
+            <TouchableOpacity style={{ marginEnd: 40, }} activeOpacity={.7} onPress={() => { onConfirm(props.id, item) }}>
+                <Image style={{ height: 60, width: 60 }} source={require('../Images/add_turno.png')} />
+            </TouchableOpacity>
         </View>
     )
     const styles = StyleSheet.create({
@@ -60,7 +104,7 @@ export default function ListaFindTurnos({screenName}){
                 <FlatList
                     data={data}
                     renderItem={despliegue}
-                    keyExtractor={ (item, index) => index.toString() }
+                    keyExtractor={(item, index) => index.toString()}
                     ListFooterComponent={function () {
                         return (<Image style={{ alignSelf: 'center', marginTop: 21, marginBottom: 21, }} source={require('../Images/footer.png')} />);
                     }}
