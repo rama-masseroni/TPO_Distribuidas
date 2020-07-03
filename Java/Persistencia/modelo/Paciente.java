@@ -163,31 +163,10 @@ public class Paciente extends Rol {
 		}
 	}
 
-//	public String confirmarAsistencia(String fecha, String hora) {
-//		CalculosFechas calc = new CalculosFechas();
-//		Date fechaDelTurno = calc.deStringADateUtil(fecha, hora);
-//		Date confInicial = calc.sumarHorasAFecha(fechaDelTurno, -12);
-//		Date confFinal = calc.sumarHorasAFecha(fechaDelTurno, -1);
-//		Date fechaHsActual = new Date();
-//		if (fechaHsActual.compareTo(confInicial) > 0 && fechaHsActual.compareTo(confFinal) < 0) {
-//			TurnoDAO td = new TurnoDAO();
-//			List<Turno> lt = misTurnos();
-//			for (Turno t : lt)
-//				if (t.getFecha().equals(fecha) && t.getHora().equals(hora)) {
-//					t.setEstado("Confirmado");
-//					td.update(t);
-//				}
-//			return "Ha confirmado el turno exitosamente!";
-//		} else {
-//			TurnoDAO td = new TurnoDAO();
-//			List<Turno> lt = misTurnos();
-//			for (Turno t : lt)
-//				if (t.getFecha().equals(fecha) && t.getHora().equals(hora)) {
-//					t.setEstado("Confirmado fuera de término");
-//					td.update(t);
-//				}
-//			return "Usted no ha confirmado su turno a tiempo";
-//		}
-//	}
+	public String ingresarAColaDeEspera(String especialidad, int idUsrMed) {
+		TurnoEnEspera t = new TurnoEnEspera(especialidad, this.getIdUsr(), idUsrMed);
+		t.guardar();
+		return "Ha ingresado en cola de espera";
+	}
 
 }

@@ -162,5 +162,22 @@ public class Controlador {
 		t.actualizar();
 		return "Se cancelo el turno";
 	}
+	
+	public String pacienteAColaDeEspera(String esp, int idUsrPac, int idUsrMed) {
+		String resultado = new Paciente(idUsrPac).ingresarAColaDeEspera(esp, idUsrMed);
+		return resultado;
+	}
+	
+}
+
+
+
+
+
+
+
+
+
+
 
 }

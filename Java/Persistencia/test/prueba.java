@@ -173,6 +173,11 @@ public class prueba {
 		// ---------------------------------------- ARRIBA DE ESTA LÍNEA ESTÁ PROBADO -------------------------------------------------
 		// ------------------------------------------------------------------------------------------------------------
 		
+		String res = Controlador.getInstancia().pacienteAColaDeEspera("Hepatologia", 7, 5);
+		System.out.println(res);
+		
+		
+		
 
 
 		
