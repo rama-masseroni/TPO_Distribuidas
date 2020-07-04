@@ -169,15 +169,3 @@ public class Controlador {
 	}
 	
 }
-
-
-
-
-
-
-
-
-
-
-
-}
