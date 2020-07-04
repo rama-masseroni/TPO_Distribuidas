@@ -58,6 +58,7 @@ public class HomeController {
 	@RequestMapping(value = "/buscarTurnos", method = RequestMethod.POST, produces = { "application/json" })
 	public @ResponseBody <json> String buscarTurno(@RequestParam(value = "dia", required = true) Date dia,
 			@RequestParam(value = "esp", required = true) String especialidad) throws JsonProcessingException{
+		System.out.println("Active!");
 		List<TurnoView> turnos = Controlador.getInstancia().buscarTurnos(dia, especialidad);
 		for(TurnoView tv : turnos) System.out.println(tv.toString());
 		return om.writeValueAsString(turnos);
