@@ -1,9 +1,9 @@
 <hibernate-configuration>
   <session-factory>
     <property name="hibernate.connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
-    <property name="hibernate.connection.url">jdbc:sqlserver://localhost:1433;databaseName=CRUCIS</property>
-    <property name="hibernate.connection.username">distribuidas</property>
-    <property name="hibernate.connection.password">distribuidas</property>
+    <property name="hibernate.connection.url">jdbc:sqlserver://localhost:1433;databaseName=Distribuidas</property>
+    <property name="hibernate.connection.username">crucis</property>
+    <property name="hibernate.connection.password">crucis</property>
     <property name="dialect">org.hibernate.dialect.SQLServerDialect</property>
 	<property name="hibernate.show_sql">false</property>
 	
@@ -11,8 +11,12 @@
  	<mapping class="entities.RolEntity"/>
  	<mapping class="entities.TurnoEntity"/>
  	<mapping class="entities.PacienteEntity"/>
+<<<<<<< Updated upstream
  	<mapping class="entities.MedicoEntity"/>
  	<mapping class="entities.TurnoEnEsperaEntity"/>
+=======
+ 	<mapping class = "entities.MedicoEntity"/>
+>>>>>>> Stashed changes
 	
   </session-factory>
 </hibernate-configuration>
