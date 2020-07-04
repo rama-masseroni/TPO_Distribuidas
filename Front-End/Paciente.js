@@ -43,26 +43,23 @@ function Principal({ route, navigation }) {
                         <Text style={{ fontSize: 30, fontWeight: 'bold', }}>{route.params.datos.apellido},</Text>
                         <Text style={{ fontSize: 30, fontWeight: 'bold', }}>{route.params.datos.nombre}</Text>
                         <Text style={{ fontSize: 20, }}>{route.params.datos.dni}</Text>
-                        {/* <View style={{ flexDirection: 'row' }}>
+                        <View style={{ flexDirection: 'row' }}>
                             <Text style={{ fontSize: 20, }}>Pagos: </Text>
-                            <Text style={{ flex: 2, fontSize: 20, color: 'green' }}>{route.params.pagos ? 'Al día!' : 'En deuda.'}</Text>
-                        </View> */}
+                            <Text style={{ flex: 2, fontSize: 20, fontWeight: 'bold' }}>{route.params.pagos ? 'Al día!' : 'En deuda.'}</Text>
+                        </View>
                     </View>
                 </View>
                 <View style={{ marginTop: 20, }}>
                     <Text style={styles.subHeader}>Turnos Programados</Text>
                     <View style={styles.turnosCont}>
-                        <FetchApp id={route.params.datos.id} />
+                        <FetchApp/>
                     </View>
                 </View>
                 <TouchableOpacity
                     activeOpacity={.7}
                     style={[styles.primaryButton, { marginTop: 50, }]}
                     onPress={() => {
-                        navigation.navigate('IngresarTurno', {
-                            idPac: route.params.datos.id,
-                        }
-                        );
+                        navigation.navigate('IngresarTurno');
                     }}>
                     <View>
                         <Text style={{ color: '#FFFF', fontSize: 20, fontWeight: 'bold', borderColor: '#ff3434' }}>Nuevo Turno</Text>
@@ -72,14 +69,14 @@ function Principal({ route, navigation }) {
         </LinearGradient>
     );
 }
-function IngresarTurno({ route, navigation }) {
+function IngresarTurno({ navigation }) {
     const [dataEsp, setDataEsp] = useState([]);
     const [selectedEsp, setSelectedEsp] = useState();
     const [dataMed, setDataMed] = useState([]);
     const [selectedMed, setSelectedMed] = useState();
 
-    const {idPac} = route.params;
-    console.log(idPac);
+    // const {userNamePac} = route.params;
+    // console.log(userNamePac);
 
     const [dia, setDia] = useState(new Date());
     const [datePickMode, setMode] = useState('date');
@@ -130,23 +127,23 @@ function IngresarTurno({ route, navigation }) {
     let listaEspe = dataEsp.map((myValue, indice) => {
         return (
             <Picker.Item label={myValue} value={myValue} key={indice} />
-        )
-    });
-
-
-    let listaMed = dataMed.map((myValue, indice) => {
-        return (
-            <Picker.Item label={myValue.nombre + ' ' + myValue.apellido} value={indice} key={indice} />
-        )
-    })
-
-    return (
-        <LinearGradient
-            colors={['#FF3535', 'white']}
-            start={[0, 0.1]}
-            end={[0, 0.2]}
-            style={{ flex: 1 }}
-        >
+            )
+        });
+        
+        
+        let listaMed = dataMed.map((myValue, indice) => {
+            return (
+                <Picker.Item label={myValue.nombre + ' ' + myValue.apellido} value={indice} key={indice} />
+                )
+            })
+            
+            return (
+                <LinearGradient
+                colors={['#FF3535', 'white']}
+                start={[0, 0.1]}
+                end={[0, 0.2]}
+                style={{ flex: 1 }}
+                >
             <View style={styles.container}>
                 <TouchableOpacity onPress={() => { navigation.goBack() }}
                     style={{ alignSelf: 'flex-start', marginStart: 20, flexDirection: 'row', marginTop: 50 }}>
@@ -243,13 +240,13 @@ function IngresarTurno({ route, navigation }) {
                         </View>
                         {datePicVisible && (
                             <DateTimePicker
-                                value={dia}
-                                mode={datePickMode}
-                                is24Hour={true}
-                                display="default"
-                                onChange={handleChange}
+                            value={dia}
+                            mode={datePickMode}
+                            is24Hour={true}
+                            display="default"
+                            onChange={handleChange}
                             />
-                        )}
+                            )}
                     </View>
 
                     <View style={{ alignSelf: "flex-start" }}>
@@ -296,23 +293,23 @@ function IngresarTurno({ route, navigation }) {
                     onPress={() => {
                         let options = { dateStyle: 'full', timeStyle: 'medium' };
                         options.timeZone = 'UTC-3';
-                        console.log(idPac);
+                        // console.log(dia.toLocaleString('en-us', options));
+                        // console.log(userNamePac);
                         // console.log(selectedEsp);
                         // console.log(dia.toLocaleDateString('en-us', options));
-                        // console.log(dia.toLocaleString('en-us', options));
                         navigation.navigate('ElegirTurno',
-                            {
-                                dia: dia,
-                                espe: selectedEsp,
-                                id: idPac,
-                                // medico: selectedMed,
-                                // fecha: dia.toLocaleDateString('en-us', options),
+                        {
+                            dia: dia,
+                            espe: selectedEsp,
+                            // id: userNamePac,
+                            // medico: selectedMed,
+                            // fecha: dia.toLocaleDateString('en-us', options),
                                 // hora: dia.toLocaleTimeString('en-us', options),
-
+                                
                             });
-                        // console.log(Date.parse(dia));
-                    }}
-                >
+                            // console.log(Date.parse(dia));
+                        }}
+                        >
                     <Text style={{ color: '#FFFF', fontSize: 20, fontWeight: 'bold', borderColor: '#ff3434' }}>Buscar Turnos</Text>
                 </TouchableOpacity>
             </View>
@@ -324,9 +321,9 @@ function ElegirTurno({ route, navigation }) {
 
     // useEffect(() => {
     //     console.log(route.params.dia);
-    //     console.log(route.params.espe);
+        // console.log(route.params.espe);
     // }, []);
-    console.log(route.params.id)
+    // console.log(route.params.id)
 
     return (
         <LinearGradient
@@ -349,7 +346,7 @@ function ElegirTurno({ route, navigation }) {
                 <View style={{ alignContent: "flex-start" }}>
                     <View style={{ marginTop: 20, }}>
                         <View style={[styles.turnosCont, { height: 510 }]}>
-                            <ListaFindTurnos dia={route.params.dia} espe={route.params.espe} medico={route.params.medico} id={route.params.id}/>
+                            <ListaFindTurnos dia={route.params.dia} espe={route.params.espe} medico={route.params.medico}/>
                         </View>
                     </View>
 

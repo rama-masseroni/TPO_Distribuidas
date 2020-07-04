@@ -1,6 +1,7 @@
 package uade.edu.tpo;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -54,17 +55,28 @@ public class HomeController {
 
 		return "home";
 	}
-	
+
+	@RequestMapping(value = "/reservarTurno", method = RequestMethod.POST, produces = { "application/json" })
+	public @ResponseBody <json> String reservarTurno(@RequestParam(value = "idP", required = true) int idPac,
+			@RequestParam(value = "idM", required = true) int idMed,
+			@RequestParam(value = "esp", required = true) String especialidad,
+			@RequestParam(value = "fecha", required = true) String fecha,
+			@RequestParam(value = "hora", required = true) String hora) throws JsonProcessingException {
+		String answer = Controlador.getInstancia().reservarTurno(idPac, idMed, especialidad, fecha, hora);
+		System.out.println(answer);
+		return om.writeValueAsString(answer);
+	}
+
 	@RequestMapping(value = "/buscarTurnos", method = RequestMethod.POST, produces = { "application/json" })
 	public @ResponseBody <json> String buscarTurno(@RequestParam(value = "dia", required = true) Date dia,
-			@RequestParam(value = "esp", required = true) String especialidad) throws JsonProcessingException{
-		System.out.println("Active!");
+			@RequestParam(value = "esp", required = true) String especialidad) throws JsonProcessingException {
+//		System.out.println("Active!");
 		List<TurnoView> turnos = Controlador.getInstancia().buscarTurnos(dia, especialidad);
-		for(TurnoView tv : turnos) System.out.println(tv.toString());
+		for (TurnoView tv : turnos)
+			System.out.println(tv.toString());
 		return om.writeValueAsString(turnos);
 //		return om.writeValueAsString(Controlador.getInstancia().buscarTurnos(dia, especialidad));
 	}
-
 
 	@RequestMapping(value = "/getUserByID", method = RequestMethod.POST, produces = { "application/json" })
 	public @ResponseBody <json> String getUsuarioByID(@RequestParam(value = "id", required = true) int id)
@@ -74,7 +86,6 @@ public class HomeController {
 			res = om.writeValueAsString(usr);
 		return res;
 	}
-	
 
 	@RequestMapping(value = "/getMedicos", method = RequestMethod.GET, produces = { "application/json" })
 	public @ResponseBody <json> String getUsuarioByID() throws JsonProcessingException {
@@ -112,7 +123,13 @@ public class HomeController {
 
 	@RequestMapping(value = "/misTurnos", method = RequestMethod.GET, produces = { "application/json" })
 	public @ResponseBody <json> String misTurnos() throws JsonProcessingException {
-		List<TurnoView> res = Controlador.getInstancia().proxTurnosPaciente(userSession.getRoles().get(0).getIdUsr());
+		List<TurnoView> res = new ArrayList<TurnoView>();
+		if(userSession.getRoles().size() == 1 && userSession.getRoles().get(0).getNombreRol().equals("Paciente")) {
+			res = Controlador.getInstancia().proxTurnosPaciente(userSession.getRoles().get(0).getIdUsr());
+		}
+		if(userSession.getRoles().size() == 1 && userSession.getRoles().get(0).getNombreRol().equals("Medico")) {
+			res = Controlador.getInstancia().proxTurnosMedico(userSession.getRoles().get(0).getIdUsr());
+		}
 		return om.writeValueAsString(res);
 	}
 

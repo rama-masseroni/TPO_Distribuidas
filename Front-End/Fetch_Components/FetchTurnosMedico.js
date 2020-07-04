@@ -14,17 +14,21 @@ export default FetchTurnosMedico = (props) => {
 
   function onCancel(item) { alert('Se ha cancelado el turno con el paciente:\n' + item.paciente.apellido); }
 
+  function checkEstado(item) {
+    if (item.estado == "Disponible") return (
+      <Text allowFontScaling numberOfLines={1} style={{ fontWeight: 'bold', color:'#d87727', fontSize: 20 }}>
+        Disponible
+      </Text>)
+    else return (
+      <Text allowFontScaling numberOfLines={1} style={{ fontWeight: 'bold', fontStyle: 'italic', fontSize: 20 }}>
+        {item.paciente.apellido}, {item.paciente.nombre}
+      </Text>
+    )
+  }
 
   useEffect(() => {
 
-    fetch('http://192.168.0.160:1234/tpo/misTurnos', {
-      method: 'POST', // or 'PUT'
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: 'id=' + props.id
-
-    })
+    fetch('http://192.168.0.160:1234/tpo/misTurnos')
       .then((response) => response.json())
       .then(data => {
         setDataTurno(data);
@@ -48,9 +52,7 @@ export default FetchTurnosMedico = (props) => {
     <View style={styles.turno}>
       <View style={{ flex: 2 }}>
         <View style={{ flexDirection: 'column', alignContent: 'space-around' }}>
-          <Text allowFontScaling numberOfLines={1} style={{ fontWeight: 'bold', fontStyle: 'italic', fontSize: 20 }}>
-            {item.paciente.apellido}, {item.paciente.nombre}
-          </Text>
+          {checkEstado(item)}
           <Text style={{ fontWeight: 'bold', fontSize: 15 }}>
             {item.especialidad}
           </Text>

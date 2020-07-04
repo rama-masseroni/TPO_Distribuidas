@@ -17,7 +17,22 @@ function Registro({ navigation }) {
   const [exNom, setEN] = useState('');
   const [exPass, setEP] = useState('');
 
-
+  function getRoles() {
+    var destino = ''
+    fetch('http://192.168.0.160:1234/tpo/getRoles')
+      .then(response => response.json)
+      .then(data => {
+        switch (data) {
+          case 0: destino = 'Paciente';
+          case 1: destino = 'Medico';
+          case 2: console.log('Es tanto paciente como médico!');
+            break;
+          default: destino = 'Error!';
+        }
+      })
+      .catch(error => console.log(error));
+    return destino;
+  }
 
   function handleTouch() {
 
@@ -33,8 +48,9 @@ function Registro({ navigation }) {
       .then(response => response.json())
       .then(data => {
         if (data != undefined) {
-          // navigation.navigate('Medico', {
-            navigation.navigate('Paciente', {
+          //  var destino = getRoles();
+          navigation.navigate('Medico', {
+          // navigation.navigate('Paciente', {
             screen: 'Principal',
             params: {
               datos: data,

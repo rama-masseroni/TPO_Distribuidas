@@ -65,8 +65,8 @@ function Principal({ route, navigation }) {
 function CalendarOptionExample(props) {
     return (
         <View style={{ flexDirection: "row", alignItems: 'center', marginBottom: 15 }}>
-            <View style={{ backgroundColor: props.colorFill, width: 35, height: 35, borderColor: "#7C7C7C", borderWidth: 1 }} />
-            <Text style={{ fontSize: 20, marginStart: 25 }}>{props.text}</Text>
+            <View style={{ backgroundColor: props.colorFill, width: 25, height: 25, borderColor: "#7C7C7C", borderWidth: 1 }} />
+            <Text style={{ fontSize: 15, marginStart: 25 }}>{props.text}</Text>
         </View>
     )
 }
@@ -75,6 +75,9 @@ function Calendario({ route, navigation }) {
     const hoy = new Date();
     const limteEdit = new Date(new Date().getTime + 1000 * 60 * 60 * 24 * 7);
     const limitCreate = new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 61);
+
+    var groupDays = [];
+    const [flagMultiples, raiseFlag] = useState(false);
 
     // console.log(route.params.idM);
     return (
@@ -116,6 +119,12 @@ function Calendario({ route, navigation }) {
                             // console.log("Selected day: " + day.dateString);
                             navigation.navigate('CrearUnTurno', { dia: day.dateString, idM: route.params.idM, });
                         }}
+
+                        onDayLongPress={(day) => {
+                            raiseFlag(true);
+                            groupDays.push(day);
+                        }}
+
                         style={{
                             borderWidth: 2,
                             borderColor: 'gray',
@@ -125,6 +134,26 @@ function Calendario({ route, navigation }) {
                     />
 
                 </View>
+
+                {flagMultiples ?
+                    <TouchableOpacity
+                        style={{
+                            borderWidth: 1,
+                            borderColor: 'rgba(0,0,0,0.2)',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            width: 65,
+                            height: 65,
+                            position: 'absolute',
+                            bottom: 10,
+                            right: 10,
+                            backgroundColor: '#fff',
+                            borderRadius: 100,
+                        }}
+                    >
+                        <Icon name="plus" size={30} color="#01a699" />
+                    </TouchableOpacity> : <View />
+                }
             </View>
 
         </LinearGradient>

@@ -41,26 +41,17 @@ export default function ListaFindTurnos(props) {
     }
 
     useEffect(() => {
-        // console.log(props.dia);
-        // console.log(props.espe);
-        // console.log(props.medico);
-        // fetch('https://jsonplaceholder.typicode.com/users')
-        // .then((response) => response.json())
-        // .then((json) => setData(json))
-        // .catch((error) => console.error(error))
-        // .finally(() => setLoading(false));
-
+        console.log(props.dia + ' ' + props.espe)
         fetch('http://192.168.0.160:1234/tpo/buscarTurnos', {
             method: 'POST', // or 'PUT'
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: 'dia=' + props.dia + '&especialidad=' + props.espe,
+            body: 'dia=' + props.dia + '&esp=' + props.espe,
         })
             .then((response) => response.json())
             .then(data => {
                 setList(data);
-                // setSID(data[0].idUsrMed);
             })
             .catch((error) => console.error(error))
             .finally(() => { setLoading(false) });
@@ -76,7 +67,7 @@ export default function ListaFindTurnos(props) {
                 </Text>
 
                 <View style={{ marginTop: 5, marginBottom: 8, flexDirection: 'row' }}>
-                    <Text>{item.fecha}</Text>
+                    <Text>{item.fecha} a las {item.hora}</Text>
                     <Text style={{ marginStart: 17 }}>{item.hora}</Text>
                 </View>
             </View>

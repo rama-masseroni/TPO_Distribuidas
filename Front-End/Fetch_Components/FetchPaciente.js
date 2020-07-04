@@ -15,14 +15,7 @@ export default FetchApp = (props) => {
 
   useEffect(() => {
 
-    fetch('http://192.168.0.160:1234/tpo/misTurnos', {
-      method: 'POST', // or 'PUT'
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: 'id=' + props.id
-
-    })
+    fetch('http://192.168.0.160:1234/tpo/misTurnos')
       .then((response) => response.json())
       .then(data => {
         setDataTurno(data);
