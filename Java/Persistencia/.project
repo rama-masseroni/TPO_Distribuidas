@@ -26,12 +26,6 @@
 		<nature>org.eclipse.wst.common.modulecore.ModuleCoreNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.wst.common.project.facet.core.nature</nature>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 		<nature>org.eclipse.wst.common.modulecore.ModuleCoreNature</nature>
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 	</natures>
 </projectDescription>

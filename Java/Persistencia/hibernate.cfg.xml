@@ -11,16 +11,8 @@
  	<mapping class="entities.RolEntity"/>
  	<mapping class="entities.TurnoEntity"/>
  	<mapping class="entities.PacienteEntity"/>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
  	<mapping class="entities.MedicoEntity"/>
  	<mapping class="entities.TurnoEnEsperaEntity"/>
-=======
  	<mapping class = "entities.MedicoEntity"/>
->>>>>>> Stashed changes
-=======
- 	<mapping class = "entities.MedicoEntity"/>
->>>>>>> Stashed changes
-	
   </session-factory>
 </hibernate-configuration>
