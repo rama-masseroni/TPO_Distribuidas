@@ -108,7 +108,7 @@ function IngresarTurno({ navigation }) {
 
 
     useEffect(() => {
-        fetch('http://192.168.0.160:1234/tpo/getEspecialidades')
+        fetch('http://192.168.0.161:1234/tpo/getEspecialidades')
             .then((response) => response.json())
             .then((json) => setDataEsp(json))
             .then(() => setSelectedEsp(''))
@@ -116,7 +116,7 @@ function IngresarTurno({ navigation }) {
         // .finally(() => setSelectedEsp(''));
 
 
-        fetch('http://192.168.0.160:1234/tpo/getMedicos')
+        fetch('http://192.168.0.161:1234/tpo/getMedicos')
             .then((response) => response.json())
             .then((json) => setDataMed(json))
             .then(() => setSelectedMed(''))

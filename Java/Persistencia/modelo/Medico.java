@@ -135,6 +135,7 @@ public class Medico extends Rol {
 		}
 	}
 
+
 	public String eliminarPeriodo(Map<String, List<String>> horarios) {
 		boolean eliminacionExitosa = true;
 		for (Map.Entry<String, List<String>> entry : horarios.entrySet()) {

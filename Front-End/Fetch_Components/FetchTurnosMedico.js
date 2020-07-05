@@ -28,7 +28,7 @@ export default FetchTurnosMedico = (props) => {
 
   useEffect(() => {
 
-    fetch('http://192.168.0.160:1234/tpo/misTurnos')
+    fetch('http://192.168.0.161:1234/tpo/misTurnos')
       .then((response) => response.json())
       .then(data => {
         setDataTurno(data);

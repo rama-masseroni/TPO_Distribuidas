@@ -17,7 +17,7 @@ export default function ListaFindTurnos(props) {
         console.log(item.fecha);
         console.log(item.hora);
 
-        fetch('http://192.168.0.160:1234/tpo/reservarTurno', {
+        fetch('http://192.168.0.161:1234/tpo/reservarTurno', {
             method: 'POST', // or 'PUT'
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -42,7 +42,7 @@ export default function ListaFindTurnos(props) {
 
     useEffect(() => {
         console.log(props.dia + ' ' + props.espe)
-        fetch('http://192.168.0.160:1234/tpo/buscarTurnos', {
+        fetch('http://192.168.0.161:1234/tpo/buscarTurnos', {
             method: 'POST', // or 'PUT'
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',

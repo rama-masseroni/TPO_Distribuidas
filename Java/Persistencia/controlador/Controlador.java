@@ -140,7 +140,7 @@ public class Controlador {
 		String resultado = new Medico(idUsrMed).agendarTurnoIndividual(esp, fecha, hora);
 		return resultado;
 	}
-
+	
 	public String agendarPeriodoMedico(int idUsrMed, String esp, Map<String, List<String>> horarios) {
 		String resultado = new Medico(idUsrMed).agendarPeriodo(esp, horarios);
 		return resultado;

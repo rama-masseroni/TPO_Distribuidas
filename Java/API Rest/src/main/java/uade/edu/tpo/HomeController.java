@@ -3,8 +3,10 @@ package uade.edu.tpo;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,12 +22,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import controlador.Controlador;
 import daos.UsuarioDAO;
-import modelo.Paciente;
-import modelo.Turno;
 import modelo.Usuario;
 import views.RolView;
 import views.TurnoView;
 import views.UsuarioView;
+import modelo.Medico;
 
 /**
  * Handles requests for the application home page.
@@ -55,6 +56,38 @@ public class HomeController {
 
 		return "home";
 	}
+	
+	@RequestMapping(value = "/uploadMultiples", method = RequestMethod.POST, produces = { "application/json" })
+	public @ResponseBody <json> String uploadTurno(@RequestParam (value = "dias", required= true) List<String> listDias,
+			@RequestParam (value = "hora", required = true) String hora, 
+			@RequestParam (value = "especialidad", required = true) String especialidad) throws JsonProcessingException{
+		Map<String, List<String>> horarios = new HashMap<String, List<String>>();
+		List<String> assignedHour = new ArrayList<String>();
+		assignedHour.add(hora);
+		for(String day: listDias) {
+			horarios.put(day, assignedHour);
+		}		
+		String resultado = Controlador.getInstancia().agendarPeriodoMedico(userSession.getRoles().get(0).getIdUsr(), especialidad, horarios);
+		return om.writeValueAsString(resultado);
+	}
+	
+	
+	@RequestMapping(value = "/uploadTurno", method = RequestMethod.POST, produces = { "application/json" })
+	public @ResponseBody <json> String uploadTurno(@RequestParam (value = "dia", required= true) String dia,
+			@RequestParam (value = "hora", required = true) String hora, 
+			@RequestParam (value = "especialidad", required = true) String especialidad) throws JsonProcessingException{
+		String resultado = Controlador.getInstancia().agendarNuevoTurnoIndividual(userSession.getRoles().get(0).getIdUsr(), especialidad, dia, hora);
+		return om.writeValueAsString(resultado);
+	}
+
+	
+	
+	@RequestMapping(value = "/getEspByMed", method = RequestMethod.GET, produces = { "application/json" })
+	public @ResponseBody <json> String getEspByMed() throws JsonProcessingException{
+		List<String> especialidades = new Medico(userSession.getRoles().get(0).getIdUsr()).getEspecialidades();
+		return om.writeValueAsString(especialidades);
+	}
+
 
 	@RequestMapping(value = "/reservarTurno", method = RequestMethod.POST, produces = { "application/json" })
 	public @ResponseBody <json> String reservarTurno(@RequestParam(value = "idP", required = true) int idPac,
@@ -139,6 +172,7 @@ public class HomeController {
 		boolean b = Controlador.getInstancia().verificarLogin(usuario, password);
 		if (b) {
 			userSession = Controlador.getInstancia().inicioDeSesion(usuario, password);
+			System.out.println(userSession.getNombre() + ' ' + userSession.getApellido());
 			return om.writeValueAsString(userSession);
 		} else
 			return om.writeValueAsString(null);

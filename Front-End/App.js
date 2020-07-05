@@ -19,7 +19,7 @@ function Registro({ navigation }) {
 
   function getRoles() {
     var destino = ''
-    fetch('http://192.168.0.160:1234/tpo/getRoles')
+    fetch('http://192.168.0.161:1234/tpo/getRoles')
       .then(response => response.json)
       .then(data => {
         switch (data) {
@@ -37,7 +37,7 @@ function Registro({ navigation }) {
   function handleTouch() {
 
 
-    fetch('http://192.168.0.160:1234/tpo/verificarLogin', {
+    fetch('http://192.168.0.161:1234/tpo/verificarLogin', {
       method: 'POST', // or 'PUT'
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
