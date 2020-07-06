@@ -43,8 +43,8 @@ function Registro({ navigation }) {
       .then(data => {
         if (data != undefined) {
           // setDato(data);
-          navigation.navigate('Paciente', {
-            // navigation.navigate('Medico', {
+          // navigation.navigate('Paciente', {
+            navigation.navigate('Medico', {
             screen: 'Principal',
             params: {
               datos: data,

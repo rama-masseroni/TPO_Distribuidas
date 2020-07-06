@@ -3,20 +3,31 @@ import { Image, ActivityIndicator, FlatList, StyleSheet, Text, TouchableOpacity,
 
 export default FetchTurnosMedico = (props) => {
   const [isLoading, setLoading] = useState(true);
-  const [gotMedico, raiseGetMedFlag] = useState(false);
   const [dataTurno, setDataTurno] = useState([]);
-  const [dataMedico, setDataMedico] = useState([]);
-
+  const [estadoTurno, isElim] = useState('');
   // console.log(props.id);
 
-  function onConfirm(item) { alert('Has confirmado el turno con el paciente:\n' + item.paciente.apellido); }
 
 
-  function onCancel(item) { alert('Se ha cancelado el turno con el paciente:\n' + item.paciente.apellido); }
+  function onCancel(item) {
+    fetch('http://192.168.0.161:1234/tpo/medicoEliminaTurno', {
+      method: 'POST', // or 'PUT'
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: 'fecha=' + item.fecha + '&hora=' + item.hora,
+
+    }).then(response => response.json())
+      .then(data => {
+        isElim(data);
+        alert(data);
+      })
+      .catch(error => { console.log("Error: " + error) });
+  }
 
   function checkEstado(item) {
     if (item.estado == "Disponible") return (
-      <Text allowFontScaling numberOfLines={1} style={{ fontWeight: 'bold', color:'#d87727', fontSize: 20 }}>
+      <Text allowFontScaling numberOfLines={1} style={{ fontWeight: 'bold', color: '#d87727', fontSize: 20 }}>
         Disponible
       </Text>)
     else return (
@@ -36,33 +47,27 @@ export default FetchTurnosMedico = (props) => {
       })
       .catch((error) => console.error(error))
       .finally(() => { setLoading(false) });
-
-    //   .then((data) => {
-    //     setDataMedico(data);
-    //     // console.log(dataMedico);
-    //   })
-    //   .catch((error) => console.error(error));
-    // dataTurno.forEach(element => {
-    //   console.log(element);
-    // });
-  }, []);
+  }, [estadoTurno]);
 
 
   despliegue = ({ item }) => (
-    <View style={styles.turno}>
-      <View style={{ flex: 2 }}>
-        <View style={{ flexDirection: 'column', alignContent: 'space-around' }}>
-          {checkEstado(item)}
-          <Text style={{ fontWeight: 'bold', fontSize: 15 }}>
-            {item.especialidad}
-          </Text>
-        </View>
 
-        <View style={{ marginTop: 5, marginBottom: 8, flexDirection: 'row' }}>
-          <Text>{item.fecha}</Text>
-          <Text style={{ marginStart: 17 }}>{item.hora}</Text>
+    <View style={styles.turno}>
+      {item.estado == "Cancelado" ? <View /> :
+        <View style={{ flex: 2 }}>
+          <View style={{ flexDirection: 'column', alignContent: 'space-around' }}>
+            {checkEstado(item)}
+            <Text style={{ fontWeight: 'bold', fontSize: 15 }}>
+              {item.especialidad}
+            </Text>
+          </View>
+
+          <View style={{ marginTop: 5, marginBottom: 8, flexDirection: 'row' }}>
+            <Text>{item.fecha}</Text>
+            <Text style={{ marginStart: 17 }}>{item.hora}</Text>
+          </View>
         </View>
-      </View>
+      }
       <View style={{ flex: 1, flexDirection: 'row', marginTop: 30 }}>
         <TouchableOpacity style={{ marginStart: 20 }} activeOpacity={.7} onPress={() => onCancel(item)}>
           <Image style={{ height: 30, width: 30 }} source={require('../Images/red_cross.png')} />

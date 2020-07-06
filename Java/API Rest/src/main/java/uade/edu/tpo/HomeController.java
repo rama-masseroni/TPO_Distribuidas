@@ -110,6 +110,14 @@ public class HomeController {
 		List<String> especialidades = new Medico(userSession.getRoles().get(0).getIdUsr()).getEspecialidades();
 		return om.writeValueAsString(especialidades);
 	}
+	
+	@RequestMapping(value = "/medicoEliminaTurno", method = RequestMethod.POST, produces = {"application/json"})
+	public @ResponseBody <json> String medicoEliminaTurno(@RequestParam(value = "fecha", required = true) String fecha,
+			@RequestParam(value = "hora", required = true)String hora) throws JsonProcessingException{
+		String answer = Controlador.getInstancia().eliminacionTurnoIndividual(userSession.getId(), fecha, hora);
+		System.out.println(answer);
+		return om.writeValueAsString(answer);
+	}
 
 	@RequestMapping(value = "/cancelarTurno", method = RequestMethod.POST, produces = {"application/json"})
 	public @ResponseBody <json> String cancelarTurno(@RequestParam(value = "fecha", required = true) String fecha,
