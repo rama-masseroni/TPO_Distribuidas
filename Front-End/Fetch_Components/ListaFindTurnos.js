@@ -60,11 +60,11 @@ export default function ListaFindTurnos(props) {
         })
             .then((response) => response.json())
             .then(data => {
-                if (data == undefined) navigation.navigate('ColaDeEspera', { especialidad: props.espe });
-                else setList(data);
+                setList(data);
             })
             .catch((error) => console.error(error))
             .finally(() => { setLoading(false) });
+            if (data.length == 0) navigation.navigate('ColaDeEspera', { especialidad: props.espe, idPac: props.idPac, idMed: props.medico});
     }, []);
     function checkDia(item, enviada) {
         console.log(item.fecha);

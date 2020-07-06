@@ -65,19 +65,16 @@ public class HomeController {
 	public @ResponseBody <json> String aColaDeEspera(
 			@RequestParam(value = "especialidad", required = true) String especialidad,
 			@RequestParam(value = "idPaciente", required = true) int idPaciente,
-			@RequestParam(value = "idMedico", required = false) int idMedico) throws JsonProcessingException {
-		String res;
-		if (idMedico != 1)
-			res = Controlador.getInstancia().pacienteAColaDeEspera(especialidad, idPaciente, idMedico);
-		else
-			res = Controlador.getInstancia().pacienteAColaDeEspera(especialidad, idPaciente, 1);
+			@RequestParam(value = "idMedico", required = true) int idMedico) throws JsonProcessingException {
+		String res = Controlador.getInstancia().pacienteAColaDeEspera(especialidad, idPaciente, idMedico);
 		return om.writeValueAsString(res);
 	}
 
 	@RequestMapping(value = "/getPacientesEsperando", method = RequestMethod.POST, produces = { "application/json" })
 	public @ResponseBody <json> String getPacientesEsperando(
-			@RequestParam(value = "especialidad", required = true) String especialidad) throws JsonProcessingException {
-		int count = Controlador.getInstancia().countPacientesEsperando(especialidad, 1);
+			@RequestParam(value = "especialidad", required = true) String especialidad,
+			@RequestParam(value = "medico", required = true) int idMed) throws JsonProcessingException {
+		int count = Controlador.getInstancia().countPacientesEsperando(especialidad, idMed);
 		return om.writeValueAsString(count);
 	}
 
@@ -110,31 +107,31 @@ public class HomeController {
 		List<String> especialidades = new Medico(userSession.getRoles().get(0).getIdUsr()).getEspecialidades();
 		return om.writeValueAsString(especialidades);
 	}
-	
-	@RequestMapping(value = "/medicoEliminaTurno", method = RequestMethod.POST, produces = {"application/json"})
+
+	@RequestMapping(value = "/medicoEliminaTurno", method = RequestMethod.POST, produces = { "application/json" })
 	public @ResponseBody <json> String medicoEliminaTurno(@RequestParam(value = "fecha", required = true) String fecha,
-			@RequestParam(value = "hora", required = true)String hora) throws JsonProcessingException{
+			@RequestParam(value = "hora", required = true) String hora) throws JsonProcessingException {
 		String answer = Controlador.getInstancia().eliminacionTurnoIndividual(userSession.getId(), fecha, hora);
 		System.out.println(answer);
 		return om.writeValueAsString(answer);
 	}
 
-	@RequestMapping(value = "/cancelarTurno", method = RequestMethod.POST, produces = {"application/json"})
+	@RequestMapping(value = "/cancelarTurno", method = RequestMethod.POST, produces = { "application/json" })
 	public @ResponseBody <json> String cancelarTurno(@RequestParam(value = "fecha", required = true) String fecha,
-			@RequestParam(value = "hora", required = true)String hora) throws JsonProcessingException{
+			@RequestParam(value = "hora", required = true) String hora) throws JsonProcessingException {
 		String answer = Controlador.getInstancia().cancelarTurno(userSession.getId(), fecha, hora);
 		System.out.println(answer);
 		return om.writeValueAsString(answer);
 	}
-	
-	@RequestMapping(value = "/confirmarAssist", method = RequestMethod.POST, produces = {"application/json"})
+
+	@RequestMapping(value = "/confirmarAssist", method = RequestMethod.POST, produces = { "application/json" })
 	public @ResponseBody <json> String confirmarAssist(@RequestParam(value = "fecha", required = true) String fecha,
-			@RequestParam(value = "hora", required = true)String hora) throws JsonProcessingException{
+			@RequestParam(value = "hora", required = true) String hora) throws JsonProcessingException {
 		String answer = Controlador.getInstancia().confirmarAsistencia(userSession.getId(), fecha, hora);
 		System.out.println(answer);
 		return om.writeValueAsString(answer);
 	}
-	
+
 	@RequestMapping(value = "/reservarTurno", method = RequestMethod.POST, produces = { "application/json" })
 	public @ResponseBody <json> String reservarTurno(@RequestParam(value = "idM", required = true) int idMed,
 			@RequestParam(value = "esp", required = true) String especialidad,

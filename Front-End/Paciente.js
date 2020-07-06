@@ -59,7 +59,7 @@ function Principal({ route, navigation }) {
                     activeOpacity={.7}
                     style={[styles.primaryButton, { marginTop: 50, }]}
                     onPress={() => {
-                        navigation.navigate('IngresarTurno');
+                        navigation.navigate('IngresarTurno', {idPac: route.params.datos.id});
                     }}>
                     <View>
                         <Text style={{ color: '#FFFF', fontSize: 20, fontWeight: 'bold', borderColor: '#ff3434' }}>Nuevo Turno</Text>
@@ -69,11 +69,11 @@ function Principal({ route, navigation }) {
         </LinearGradient>
     );
 }
-function IngresarTurno({ navigation }) {
+function IngresarTurno({ route, navigation }) {
     const [dataEsp, setDataEsp] = useState([]);
-    const [selectedEsp, setSelectedEsp] = useState();
+    const [selectedEsp, setSelectedEsp] = useState('');
     const [dataMed, setDataMed] = useState([]);
-    const [selectedMed, setSelectedMed] = useState();
+    const [selectedMed, setSelectedMed] = useState('');
 
     // const {userNamePac} = route.params;
     // console.log(userNamePac);
@@ -105,6 +105,23 @@ function IngresarTurno({ navigation }) {
         setMode(currentMode);
         setShow(true);
     };
+    var index = 0;
+
+    // function getMedicos() {
+    //     fetch('http://192.168.0.161:1234/tpo/getMedicos', {
+    //         method: 'POST', // or 'PUT'
+    //         headers: {
+    //             'Content-Type': 'application/x-www-form-urlencoded',
+    //         },
+    //         body: 'especialidad=' + selectedEsp,
+
+    //     })
+    //         .then((response) => response.json())
+    //         .then((json) => setDataMed(json))
+    //         .then(() => setSelectedMed(''))
+    //         .catch((error) => console.error(error));
+    //     // .finally(() => setSelectedMed(''));
+    // }
 
 
     useEffect(() => {
@@ -114,27 +131,27 @@ function IngresarTurno({ navigation }) {
             .then(() => setSelectedEsp(''))
             .catch((error) => console.error(error))
         // .finally(() => setSelectedEsp(''));
-
-
+        
         fetch('http://192.168.0.161:1234/tpo/getMedicos')
             .then((response) => response.json())
             .then((json) => setDataMed(json))
             .then(() => setSelectedMed(''))
             .catch((error) => console.error(error));
-        // .finally(() => setSelectedMed(''));
+
     }, []);
 
-    let listaEspe = dataEsp.map((myValue, indice) => {
+
+    let listaEspe = dataEsp.map((myValue, index) => {
         return (
-            <Picker.Item label={myValue} value={myValue} key={indice} />
+            <Picker.Item label={myValue} value={myValue } />
         )
     });
 
 
     let listaMed = dataMed.map((myValue, indice) => {
-        console.log(myValue.id);
+        console.log(indice);
         return (
-            <Picker.Item label={myValue.nombre + ' ' + myValue.apellido} value={myValue.id} key={indice} />
+            <Picker.Item label={myValue.nombre +' '+ myValue.apellido} value={myValue.id} />
         )
     })
 
@@ -173,12 +190,13 @@ function IngresarTurno({ navigation }) {
                         <Picker
                             selectedValue={selectedEsp}
                             style={{ color: 'black' }}
-                            onValueChange={(myValue, indice) => {
+                            onValueChange={(myValue, index) => {
                                 setSelectedEsp(myValue);
                                 console.log(selectedEsp);
+                                // getMedicos(selectedEsp);
                             }}>
 
-                            <Picker.Item value='' label='Elija una especialidad...' />
+                            <Picker.Item label="Elija una especialidad..." value={index} />
                             {listaEspe}
                         </Picker>
 
@@ -303,7 +321,7 @@ function IngresarTurno({ navigation }) {
                                 dia: dia,
                                 espe: selectedEsp,
                                 medico: selectedMed,
-                                // id: userNamePac,
+                                idPac: route.params.idPac,
                                 // fecha: dia.toLocaleDateString('en-us', options),
                                 // hora: dia.toLocaleTimeString('en-us', options),
 
@@ -324,7 +342,7 @@ function ElegirTurno({ route, navigation }) {
     //     console.log(route.params.dia);
     // console.log(route.params.espe);
     // }, []);
-    // console.log(route.params.id)
+    console.log(route.params.id)
 
     return (
         <LinearGradient
@@ -347,7 +365,7 @@ function ElegirTurno({ route, navigation }) {
                 <View style={{ alignContent: "flex-start" }}>
                     <View style={{ marginTop: 20, }}>
                         <View style={[styles.turnosCont, { height: 510 }]}>
-                            <ListaFindTurnos dia={route.params.dia} espe={route.params.espe} medico={route.params.medico} />
+                            <ListaFindTurnos dia={route.params.dia} espe={route.params.espe} medico={route.params.medico} idPac={route.params.idPac}/>
                         </View>
                     </View>
 
@@ -358,7 +376,7 @@ function ElegirTurno({ route, navigation }) {
 }
 
 function ColaDeEspera({ route, navigation }) {
-    const [count, setCount] = useState(0);
+    const [count, setCount] = useState('');
     useEffect(() => {
 
         fetch('http://192.168.0.161:1234/tpo/getPacientesEsperando', {
@@ -366,7 +384,7 @@ function ColaDeEspera({ route, navigation }) {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: 'especialidad=' + route.params.especialidad,
+            body: 'especialidad=' + route.params.especialidad + '&medico=' + route.params.idMed,
         })
             .then((response) => response.json())
             .then(data => { setCount(data) })
@@ -374,12 +392,22 @@ function ColaDeEspera({ route, navigation }) {
 
     }, []);
 
-    function confirmWait(){
-        
+    function confirmWait() {
+        fetch('http://192.168.0.161:1234/tpo/aColaDeEsperaGenerico', {
+            method: 'POST', // or 'PUT'
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'especialidad=' + route.params.especialidad + '&idPaciente=' + route.params.idPac + '&idMedico=' + route.params.idMed,
+        })
+            .then((response) => response.json())
+            .then(data => {alert(data)})
+            .catch(error => console.log(error));
+        navigation.navigate('Principal');
     }
 
-    function cancelWait(){
-
+    function cancelWait() {
+        navigation.navigate('Principal');
     }
 
     return (
@@ -418,7 +446,7 @@ function ColaDeEspera({ route, navigation }) {
                         cancelWait()
                     }}>
                         <View style={[styles.primaryButton]} >
-                            <Text style={{ color: '#FFFF', fontSize: 20, borderColor: '#ff3434' }}>No, <Text style={{fontWeight:'bold'}}>volver</Text></Text>
+                            <Text style={{ color: '#FFFF', fontSize: 20, borderColor: '#ff3434' }}>No, <Text style={{ fontWeight: 'bold' }}>volver</Text></Text>
                         </View>
                     </TouchableOpacity>
 

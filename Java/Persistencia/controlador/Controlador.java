@@ -113,6 +113,11 @@ public class Controlador {
 	public List<String> getEspecialidades() {
 		return new MedicoDAO().getAllEspe();
 	}
+	
+	public List<String> medicosXEsp(String esp) {
+		List<String> medicos = new MedicoDAO().getNomApellMedicosXEsp(esp);
+		return medicos;
+}
 
 	public String reservarTurno(int idUsrPac, int idUsrMed, String especialidad, String fecha, String hora) {
 		Paciente pac = new Paciente(idUsrPac);
