@@ -38,13 +38,17 @@ public class prueba {
 //		System.out.println(respuestaLogin);
 
 //		// AGREGAR ROL A USUARIO
-//		Rol r = new Rol(12, "Paciente");
+//		Rol r = new Rol(1, "Paciente");
 //		Usuario usr = new UsuarioDAO().getUsuarioByUsername("delfina@ejemplo.com.ar");
 //		usr.agregarRol(r);
 
 //		// AGREGAR PACIENTE
 //		Paciente p = new Paciente(12, false);
 //		p.guardar();
+		
+		// AGREGAR MEDICO
+//		Medico m = new Medico(1);
+//		m.guardar();
 
 //		// OBTENER LOS ROLES DE UN USR 
 //		List<Rol> lr = new RolDAO().getRolesByIdUsr(9);
@@ -165,17 +169,29 @@ public class prueba {
 //		horarios.put("2020-07-29", segundoDia);
 //		String resultado = Controlador.getInstancia().eliminarPeriodoMedico(3, horarios);
 //		System.out.println(resultado);
+	
+//		List<UsuarioView> medicos = Controlador.getInstancia().getAllMeds();
+//		for(UsuarioView uv: medicos)
+//			System.out.println(uv.toString());
 		
+//		String res = Controlador.getInstancia().pacienteAColaDeEspera("Cardiologia", 31, 1);
+//		System.out.println(res);
 		// -------------------------------------- FIN Métodos del Controlador --------------------------------------
 
 		
 		// ------------------------------------------------------------------------------------------------------------
 		// ---------------------------------------- ARRIBA DE ESTA LÍNEA ESTÁ PROBADO -------------------------------------------------
 		// ------------------------------------------------------------------------------------------------------------
-		
-		String res = Controlador.getInstancia().pacienteAColaDeEspera("Hepatologia", 7, 5);
-		System.out.println(res);
-		
+		String esp = "Cardiologia";
+		int count = Controlador.getInstancia().countPacientesEsperando(esp, 1);
+		switch (count) {
+		case 0:
+			System.out.println("No hay pacientes esperando la especialidad: " + esp);
+			break;
+
+		default: System.out.println("Hay " + count + " pacientes esperando para " + esp);
+			break;
+		}
 		
 		
 
@@ -185,9 +201,6 @@ public class prueba {
 		
 
 
-		List<UsuarioView> medicos = Controlador.getInstancia().getAllMeds();
-		for(UsuarioView uv: medicos)
-			System.out.println(uv.toString());
 		
 
 

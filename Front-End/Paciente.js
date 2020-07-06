@@ -52,7 +52,7 @@ function Principal({ route, navigation }) {
                 <View style={{ marginTop: 20, }}>
                     <Text style={styles.subHeader}>Turnos Programados</Text>
                     <View style={styles.turnosCont}>
-                        <FetchApp/>
+                        <FetchApp />
                     </View>
                 </View>
                 <TouchableOpacity
@@ -127,23 +127,24 @@ function IngresarTurno({ navigation }) {
     let listaEspe = dataEsp.map((myValue, indice) => {
         return (
             <Picker.Item label={myValue} value={myValue} key={indice} />
-            )
-        });
-        
-        
-        let listaMed = dataMed.map((myValue, indice) => {
-            return (
-                <Picker.Item label={myValue.nombre + ' ' + myValue.apellido} value={indice} key={indice} />
-                )
-            })
-            
-            return (
-                <LinearGradient
-                colors={['#FF3535', 'white']}
-                start={[0, 0.1]}
-                end={[0, 0.2]}
-                style={{ flex: 1 }}
-                >
+        )
+    });
+
+
+    let listaMed = dataMed.map((myValue, indice) => {
+        console.log(myValue.id);
+        return (
+            <Picker.Item label={myValue.nombre + ' ' + myValue.apellido} value={myValue.id} key={indice} />
+        )
+    })
+
+    return (
+        <LinearGradient
+            colors={['#FF3535', 'white']}
+            start={[0, 0.1]}
+            end={[0, 0.2]}
+            style={{ flex: 1 }}
+        >
             <View style={styles.container}>
                 <TouchableOpacity onPress={() => { navigation.goBack() }}
                     style={{ alignSelf: 'flex-start', marginStart: 20, flexDirection: 'row', marginTop: 50 }}>
@@ -240,13 +241,13 @@ function IngresarTurno({ navigation }) {
                         </View>
                         {datePicVisible && (
                             <DateTimePicker
-                            value={dia}
-                            mode={datePickMode}
-                            is24Hour={true}
-                            display="default"
-                            onChange={handleChange}
+                                value={dia}
+                                mode={datePickMode}
+                                is24Hour={true}
+                                display="default"
+                                onChange={handleChange}
                             />
-                            )}
+                        )}
                     </View>
 
                     <View style={{ alignSelf: "flex-start" }}>
@@ -295,21 +296,21 @@ function IngresarTurno({ navigation }) {
                         options.timeZone = 'UTC-3';
                         // console.log(dia.toLocaleString('en-us', options));
                         // console.log(userNamePac);
-                        // console.log(selectedEsp);
+                        console.log(selectedMed);
                         // console.log(dia.toLocaleDateString('en-us', options));
                         navigation.navigate('ElegirTurno',
-                        {
-                            dia: dia,
-                            espe: selectedEsp,
-                            // id: userNamePac,
-                            // medico: selectedMed,
-                            // fecha: dia.toLocaleDateString('en-us', options),
+                            {
+                                dia: dia,
+                                espe: selectedEsp,
+                                medico: selectedMed,
+                                // id: userNamePac,
+                                // fecha: dia.toLocaleDateString('en-us', options),
                                 // hora: dia.toLocaleTimeString('en-us', options),
-                                
+
                             });
-                            // console.log(Date.parse(dia));
-                        }}
-                        >
+                        // console.log(Date.parse(dia));
+                    }}
+                >
                     <Text style={{ color: '#FFFF', fontSize: 20, fontWeight: 'bold', borderColor: '#ff3434' }}>Buscar Turnos</Text>
                 </TouchableOpacity>
             </View>
@@ -321,7 +322,7 @@ function ElegirTurno({ route, navigation }) {
 
     // useEffect(() => {
     //     console.log(route.params.dia);
-        // console.log(route.params.espe);
+    // console.log(route.params.espe);
     // }, []);
     // console.log(route.params.id)
 
@@ -346,7 +347,7 @@ function ElegirTurno({ route, navigation }) {
                 <View style={{ alignContent: "flex-start" }}>
                     <View style={{ marginTop: 20, }}>
                         <View style={[styles.turnosCont, { height: 510 }]}>
-                            <ListaFindTurnos dia={route.params.dia} espe={route.params.espe} medico={route.params.medico}/>
+                            <ListaFindTurnos dia={route.params.dia} espe={route.params.espe} medico={route.params.medico} />
                         </View>
                     </View>
 
@@ -354,6 +355,77 @@ function ElegirTurno({ route, navigation }) {
             </View>
         </LinearGradient>
     );
+}
+
+function ColaDeEspera({ route, navigation }) {
+    const [count, setCount] = useState(0);
+    useEffect(() => {
+
+        fetch('http://192.168.0.161:1234/tpo/getPacientesEsperando', {
+            method: 'POST', // or 'PUT'
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'especialidad=' + route.params.especialidad,
+        })
+            .then((response) => response.json())
+            .then(data => { setCount(data) })
+            .catch(error => console.log(error));
+
+    }, []);
+
+    function confirmWait(){
+        
+    }
+
+    function cancelWait(){
+
+    }
+
+    return (
+        <LinearGradient
+            colors={['#FF3535', 'white']}
+            start={[0, 0.1]}
+            end={[0, 0.2]}
+            style={{ flex: 1 }}
+        >
+
+            <View style={[styles.container]}>
+                <TouchableOpacity onPress={() => { navigation.navigate('IngresarTurno') }}
+                    style={{ alignSelf: 'flex-start', marginStart: 20, flexDirection: 'row', marginTop: 50 }}>
+                    <Icon name={"reply"} color={'#FFFF'} size={25} style={{ paddingTop: 7 }} />
+                    <Text style={{ marginStart: 10, fontSize: 25, color: 'white', fontWeight: 'bold' }}>Volver</Text>
+                </TouchableOpacity>
+                <View style={{ alignContent: "flex-start", marginStart: 27.5 }}>
+                    <Text style={[styles.header, { color: 'black', fontSize: 20, marginTop: 75 }]}>No se ha encontrado ningún turno...</Text>
+                    <Text style={{ fontSize: 15, color: 'black', fontWeight: 'normal' }}>En estos dos meses no hay turnos disponibles.</Text>
+                    <Text style={{ fontSize: 15, color: 'black', fontWeight: '100' }}>Sin embargo, podemos agregarte a una <Text style={{ fontWeight: 'bold' }}>cola de espera </Text><Text style={{ fontWeight: 'normal' }}>para la especialidad que buscás.</Text></Text>
+
+                </View>
+                <View style={{ alignContent: 'flex-start' }}>
+                    <Text style={{ marginTop: 57.5, fontSize: 20 }}>Actualmente hay...</Text>
+                    <Text style={{ alignSelf: 'center', fontSize: 30, fontWeight: 'bold', marginTop: 10, marginBottom: 10 }}>{count} personas</Text>
+                    <Text style={{ fontSize: 20 }}>en cola de espera</Text>
+                    <Text style={[styles.subHeader, { marginTop: 50 }]}>¿Quiere ingresar a la cola?</Text>
+                    <TouchableOpacity activeOpacity={.7} style={{ marginTop: 50 }} onPress={() => {
+                        confirmWait()
+                    }}>
+                        <View style={[styles.primaryButton]} >
+                            <Text style={{ color: '#FFFF', fontSize: 20, fontWeight: 'bold', borderColor: '#ff3434' }}>Aceptar</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity activeOpacity={.7} style={{ marginTop: 50 }} onPress={() => {
+                        cancelWait()
+                    }}>
+                        <View style={[styles.primaryButton]} >
+                            <Text style={{ color: '#FFFF', fontSize: 20, borderColor: '#ff3434' }}>No, <Text style={{fontWeight:'bold'}}>volver</Text></Text>
+                        </View>
+                    </TouchableOpacity>
+
+                </View>
+            </View>
+        </LinearGradient>
+    )
 }
 
 
@@ -440,6 +512,10 @@ export default function Paciente() {
             <StackPaciente.Screen
                 name="ElegirTurno"
                 component={ElegirTurno}
+            />
+            <StackPaciente.Screen
+                name='ColaDeEspera'
+                component={ColaDeEspera}
             />
         </StackPaciente.Navigator>
 

@@ -18,20 +18,17 @@ function Registro({ navigation }) {
   const [exPass, setEP] = useState('');
 
   function getRoles() {
-    var destino = ''
     fetch('http://192.168.0.161:1234/tpo/getRoles')
-      .then(response => response.json)
+      .then(response => response.json())
       .then(data => {
         switch (data) {
-          case 0: destino = 'Paciente';
-          case 1: destino = 'Medico';
-          case 2: console.log('Es tanto paciente como médico!');
-            break;
-          default: destino = 'Error!';
+          case '1': return 1;
+          case '2': return 2;
+          case '3': return 3;
+          default: return 0;
         }
       })
       .catch(error => console.log(error));
-    return destino;
   }
 
   function handleTouch() {
@@ -48,9 +45,35 @@ function Registro({ navigation }) {
       .then(response => response.json())
       .then(data => {
         if (data != undefined) {
-          //  var destino = getRoles();
-          navigation.navigate('Medico', {
+          // var destino = getRoles();
+          // console.log(destino);
+          // switch (destino) {
+          //   case 1:
+          //     navigation.navigate('Paciente', {
+          //       screen: 'Principal',
+          //       params: {
+          //         datos: data,
+          //       }
+          //     });
+          //     break;
+          //     case 2:
+          //       navigation.navigate('Medico', {
+          //         screen: 'Principal',
+          //         params: {
+          //           datos: data,
+          //         }
+          //       });
+          //       break;
+          //     case 3: console.log("Es tanto paciente como médico!");
+          //     break;
+
+          //     default: console.log("Error!");
+          //     ToastAndroid.show("Problema distinguiendo Roles del Usuario...", ToastAndroid.SHORT);
+          // }
+
+          
           // navigation.navigate('Paciente', {
+          navigation.navigate('Medico', {
             screen: 'Principal',
             params: {
               datos: data,

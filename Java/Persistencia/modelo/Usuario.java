@@ -158,12 +158,12 @@ public class Usuario {
 				+ apellido + ", fechaDeNacimiento=" + fechaDeNacimiento + ", id=" + id + ", dni=" + dni + ", sexo="
 				+ sexo + ", roles=" + roles + "]";
 	}
-	
+
 	public UsuarioView toView() {
 		List<RolView> rv = new ArrayList<RolView>();
 		for(Rol r : roles)
 			rv.add(r.toView());
-		return new UsuarioView(username, nombre, apellido, fechaDeNacimiento, dni, sexo, rv);
+		return new UsuarioView(id, username, nombre, apellido, fechaDeNacimiento, dni, sexo, rv);
 	}
 
 }

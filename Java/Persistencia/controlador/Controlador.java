@@ -9,6 +9,7 @@ import java.util.Map;
 import daos.MedicoDAO;
 import daos.RolDAO;
 import daos.TurnoDAO;
+import daos.TurnoEnEsperaDAO;
 import daos.UsuarioDAO;
 import modelo.Medico;
 import modelo.Paciente;
@@ -61,18 +62,22 @@ public class Controlador {
 
 	public TurnoView buscarTurnoIndividual(int idUsrMed, String fecha, String hora) {
 		Turno turno = new TurnoDAO().getTurnoIndividual(idUsrMed, fecha, hora);
-		TurnoView tv = turno.toView();
+		TurnoView tv = new TurnoView();
+		if (turno.getId() != 0)
+			tv = turno.toView();
 		return tv;
 	}
 
-	public List<TurnoView> buscarTurnos(Date dia, String especialidad){
+	public List<TurnoView> buscarTurnos(Date dia, String especialidad, int idMed) {
 		List<TurnoView> result = new ArrayList<TurnoView>();
+		dia.setHours(0);
+		dia.setMinutes(0);
 		SimpleDateFormat formatFecha = new SimpleDateFormat("YYYY-MM-dd");
 		String fecha = formatFecha.format(dia);
 		SimpleDateFormat formatHora = new SimpleDateFormat("kk:mm");
 		String hora = formatHora.format(dia);
-		List<Turno> turnos = new TurnoDAO().getTurnosConObligatorios(fecha, hora, especialidad);
-		for(Turno t : turnos)
+		List<Turno> turnos = new TurnoDAO().getTurnosWithData(fecha, hora, especialidad, idMed);
+		for (Turno t : turnos)
 			result.add(t.toView());
 		return result;
 	}
@@ -140,7 +145,7 @@ public class Controlador {
 		String resultado = new Medico(idUsrMed).agendarTurnoIndividual(esp, fecha, hora);
 		return resultado;
 	}
-	
+
 	public String agendarPeriodoMedico(int idUsrMed, String esp, Map<String, List<String>> horarios) {
 		String resultado = new Medico(idUsrMed).agendarPeriodo(esp, horarios);
 		return resultado;
@@ -162,10 +167,13 @@ public class Controlador {
 		t.actualizar();
 		return "Se cancelo el turno";
 	}
-	
+
 	public String pacienteAColaDeEspera(String esp, int idUsrPac, int idUsrMed) {
 		String resultado = new Paciente(idUsrPac).ingresarAColaDeEspera(esp, idUsrMed);
 		return resultado;
 	}
-	
+
+	public int countPacientesEsperando(String especialidad, int idUsrMed) {
+		return new TurnoEnEsperaDAO().countPacientesEsperando(especialidad, idUsrMed);
+	}
 }

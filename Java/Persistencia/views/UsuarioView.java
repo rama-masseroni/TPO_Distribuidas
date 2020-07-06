@@ -6,14 +6,15 @@ import java.util.List;
 public class UsuarioView {
 
 	private String username, nombre, apellido, fechaDeNacimiento;
-	private int dni;
+	private int dni, id;
 	private char sexo;
 	private List<RolView> roles;
 	
 	public UsuarioView() {
 	}
 
-	public UsuarioView(String username, String nombre, String apellido, String fechaDeNacimiento, int dni, char sexo, List<RolView> roles) {
+	public UsuarioView(int id, String username, String nombre, String apellido, String fechaDeNacimiento, int dni, char sexo, List<RolView> roles) {
+		this.id = id;
 		this.username = username;
 		this.nombre = nombre;
 		this.apellido = apellido;
@@ -21,6 +22,14 @@ public class UsuarioView {
 		this.dni = dni;
 		this.sexo = sexo;
 		this.setRoles(roles);
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getUsername() {
