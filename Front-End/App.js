@@ -15,18 +15,11 @@ function Registro({ navigation }) {
   const [rol, getRol] = useState('');
   const [user, setUser] = useState('');
   const [pass, setPass] = useState('');
-  var destino;
+  
   function getRoles() {
     fetch('http://192.168.0.161:1234/tpo/getRoles')
       .then(response => response.json())
-      .then(data => {
-        switch (data) {
-          case '1': return 1;
-          case '2': return 2;
-          case '3': return 3;
-          default: return 0;
-        }
-      })
+      .then(data => { getRol(data) })
       .catch(error => console.log(error));
   }
 
@@ -42,14 +35,16 @@ function Registro({ navigation }) {
       .then(response => response.json())
       .then(data => {
         if (data != undefined) {
-          // setDato(data);
-          // navigation.navigate('Paciente', {
-            navigation.navigate('Medico', {
-            screen: 'Principal',
-            params: {
-              datos: data,
-            }
-          });
+          console.log(data)
+          setDato(data);
+          getRoles();
+          // // navigation.navigate('Paciente', {
+          //   navigation.navigate('Medico', {
+          //     screen: 'Principal',
+          //     params: {
+          //       datos: dato,
+          //     }
+          //   });
         }
         else
           ToastAndroid.show("Alguno(s) de los datos ingresados es/son incorrectos. Por favor, revise.", ToastAndroid.SHORT);
@@ -57,6 +52,24 @@ function Registro({ navigation }) {
       .catch((error) => {
         console.log('Error:', error);
       });
+
+    if (rol == "1") {
+      navigation.navigate('Paciente', {
+        screen: 'Principal',
+        params: {
+          datos: dato,
+        }
+      });
+    } else if (rol == "2") {
+      navigation.navigate('Medico', {
+        screen: 'Principal',
+        params: {
+          datos: dato,
+        }
+      });
+    }
+    else if (rol == "3") ToastAndroid.show("El usuario es tanto Paciente como Médico!", ToastAndroid.SHORT);
+    else ToastAndroid.show("Hay problemas distinguiendo el rol del usuario...", ToastAndroid.SHORT);
 
     // getRol(getRoles());
     // console.log(rol);
