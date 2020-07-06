@@ -10,13 +10,12 @@ const Stack = createStackNavigator();
 
 function Registro({ navigation }) {
 
-  const [isLoading, setLoading] = useState(true);
-  const [data, setData] = useState([]);
+  // const [isLoading, setLoading] = useState(true);
+  const [dato, setDato] = useState([]);
+  const [rol, getRol] = useState('');
   const [user, setUser] = useState('');
   const [pass, setPass] = useState('');
-  const [exNom, setEN] = useState('');
-  const [exPass, setEP] = useState('');
-
+  var destino;
   function getRoles() {
     fetch('http://192.168.0.161:1234/tpo/getRoles')
       .then(response => response.json())
@@ -32,8 +31,6 @@ function Registro({ navigation }) {
   }
 
   function handleTouch() {
-
-
     fetch('http://192.168.0.161:1234/tpo/verificarLogin', {
       method: 'POST', // or 'PUT'
       headers: {
@@ -45,35 +42,9 @@ function Registro({ navigation }) {
       .then(response => response.json())
       .then(data => {
         if (data != undefined) {
-          // var destino = getRoles();
-          // console.log(destino);
-          // switch (destino) {
-          //   case 1:
-          //     navigation.navigate('Paciente', {
-          //       screen: 'Principal',
-          //       params: {
-          //         datos: data,
-          //       }
-          //     });
-          //     break;
-          //     case 2:
-          //       navigation.navigate('Medico', {
-          //         screen: 'Principal',
-          //         params: {
-          //           datos: data,
-          //         }
-          //       });
-          //       break;
-          //     case 3: console.log("Es tanto paciente como médico!");
-          //     break;
-
-          //     default: console.log("Error!");
-          //     ToastAndroid.show("Problema distinguiendo Roles del Usuario...", ToastAndroid.SHORT);
-          // }
-
-          
-          // navigation.navigate('Paciente', {
-          navigation.navigate('Medico', {
+          // setDato(data);
+          navigation.navigate('Paciente', {
+            // navigation.navigate('Medico', {
             screen: 'Principal',
             params: {
               datos: data,
@@ -86,6 +57,32 @@ function Registro({ navigation }) {
       .catch((error) => {
         console.log('Error:', error);
       });
+
+    // getRol(getRoles());
+    // console.log(rol);
+    // switch (rol) {
+    //   case 1:
+    //     navigation.navigate('Paciente', {
+    //       screen: 'Principal',
+    //       params: {
+    //         datos: dato,
+    //       }
+    //     });
+    //     break;
+    //   case 2:
+    //     navigation.navigate('Medico', {
+    //       screen: 'Principal',
+    //       params: {
+    //         datos: dato,
+    //       }
+    //     });
+    //     break;
+    //   case 3: console.log("Es tanto Paciente como médico!");
+    //     break;
+    //   default: console.log("Error distinguiendo el Rol del usuario en cuestión.")
+    //     break;
+    // }
+
   }
 
   return (

@@ -3,14 +3,46 @@ import { Image, ActivityIndicator, FlatList, StyleSheet, Text, TouchableOpacity,
 
 export default FetchApp = (props) => {
   const [isLoading, setLoading] = useState(true);
-  const [gotMedico, raiseGetMedFlag] = useState(false);
+  // const [gotMedico, raiseGetMedFlag] = useState(false);
   const [dataTurno, setDataTurno] = useState([]);
-  const [dataMedico, setDataMedico] = useState([]);
+  // const [dataMedico, setDataMedico] = useState([]);
 
-  function onConfirm(item){alert('Has confirmado el turno con el especialista:\n' + item.medico.apellido); }
+  const [estadoConf, isOK] = useState('');
+
+  function onConfirm(item) {
+    console.log(item.estado);
+    fetch('http://192.168.0.161:1234/tpo/confirmarAssist', {
+      method: 'POST', // or 'PUT'
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: 'fecha=' + item.fecha + '&hora=' + item.hora,
+    }).then(response => response.json())
+      .then(data => {
+        alert(data);
+        isOK(data);})
+      .catch(error => console.log(error));
+    console.log(estadoConf);
+
+  }
 
 
-  function onCancel(item){ alert('Se ha cancelado el turno con el especialista:\n' + item.medico.apellido); }
+  function onCancel(item) {
+    fetch('http://192.168.0.161:1234/tpo/cancelarTurno', {
+      method: 'POST', // or 'PUT'
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: 'fecha=' + item.fecha + '&hora=' + item.hora,
+    }).then(response => response.json())
+      .then(data => {
+        alert(data);
+        isOK(data);})
+      .catch(error => console.log(error));
+    console.log(estadoConf);
+
+    alert('Se ha cancelado el turno con el especialista:\n' + item.medico.apellido);
+  }
 
 
   useEffect(() => {
@@ -22,9 +54,9 @@ export default FetchApp = (props) => {
         // setSID(data[0].idUsrMed);
       })
       .catch((error) => console.error(error))
-      .finally(() => {setLoading(false)});
+      .finally(() => { setLoading(false) });
 
-  }, []);
+  }, [estadoConf]);
 
 
   despliegue = ({ item }) => (
@@ -48,9 +80,14 @@ export default FetchApp = (props) => {
         <TouchableOpacity activeOpacity={.7} onPress={() => onConfirm(item)}>
           <Image style={{ height: 30, width: 30 }} source={require('../Images/green_check.png')} />
         </TouchableOpacity>
-        <TouchableOpacity style={{ marginStart: 20 }} activeOpacity={.7} onPress={() => onCancel(item)}>
-          <Image style={{ height: 30, width: 30 }} source={require('../Images/red_cross.png')} />
-        </TouchableOpacity>
+
+        {item.estado == "Confirmado" ?
+          <View />  : 
+          item.estado == 'Cancelado' ? <View/> : <TouchableOpacity style={{ marginStart: 20 }} activeOpacity={.7} onPress={() => onCancel(item)}>
+            <Image style={{ height: 30, width: 30 }} source={require('../Images/red_cross.png')} />
+          </TouchableOpacity>
+        }
+
       </View>
     </View>
   );
