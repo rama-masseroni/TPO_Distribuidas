@@ -160,7 +160,7 @@ function Calendario({ route, navigation }) {
                             backgroundColor: '#ff0000',
                             borderRadius: 100,
                         }}
-                        onPress={() => { navigation.navigate('Multiples', { groupDays: groupDays, }); }}
+                        onPress={() => { navigation.navigate('Multiples', { groupDays: groupDays, count: groupDays.length })}}
                     >
                         <Icon name="plus" size={40} color='#ffffff' />
                     </TouchableOpacity> : <View />
@@ -363,7 +363,7 @@ function Multiples({ route, navigation }) {
         //     cont++;
         // });
         return (
-            <Text style={[styles.header, { fontSize: 25 }]}>Ha seleccionado {grupoDias.length} fecha(s). </Text>
+            <Text style={[styles.header, { fontSize: 25 }]}>Ha seleccionado {route.params.count} fecha(s). </Text>
         )
     }
 
